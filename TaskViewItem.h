@@ -36,6 +36,11 @@ public:
     void SetBtnWidth(int width) { btnWidth = width; }
     int GetBtnHeight() const {return btnHeight;}
     void SetBtnHeight(int height){this->btnHeight = height;}
+    void SetTaskInfo(TaskInfo info){
+        this->labelData->setText(info.GetInfo());
+        this->info = info;
+    }
+    TaskInfo GetTaskInfo(){return info;}
 
 
     void SetItem(QListWidgetItem *item){this->item = item;}

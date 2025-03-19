@@ -3,16 +3,19 @@
 
 #include <QMainWindow>
 #include <QSystemTrayIcon>
+#include "TaskEditWidget.h"
 #include "TrayView.h"
 
-class MainWindow : public QMainWindow
+class MainWindow : public QObject//QMainWindow
 {
     Q_OBJECT
 
     TrayView *trayView;
+    TaskEditWidget *taskEditor;
 
 public:
-    MainWindow(QWidget *parent = nullptr);
+    // MainWindow(QWidget *parent = nullptr);
+    MainWindow(QObject *parent = nullptr);
     ~MainWindow();
 
 protected:
@@ -20,5 +23,8 @@ protected:
 
 private:
     void LoadStyleSheet();
+
+signals:
+    // void EditingCompleted();
 };
 #endif // MAINWINDOW_H

@@ -3,6 +3,7 @@
 
 #include <QString>
 #include <QDateTime>
+#include <QJsonObject>
 
 class TaskInfo
 {
@@ -17,6 +18,10 @@ public:
 
     QString GetInfo(){return info;}
     QString GetType(){return type + "/" + time.toString();}
+
+    static TaskInfo FromJson(const QJsonObject &obj);
+
+    QJsonObject ToJson();
 };
 
 #endif // TASKINFO_H

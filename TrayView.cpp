@@ -8,12 +8,29 @@
 #include <QVBoxLayout>
 #include <QPushButton>
 #include <QEvent>
+#include <QStandardPaths>
+#include <QDir>
+#include <QApplication>
 
-TrayView::TrayView(QWidget *parent):QWidget(nullptr)
+TrayView::TrayView(QWidget *parent):QWidget(parent)
 {
     this->setFixedSize(250, 500);
     ObjectInit();
     WidgetInit();
+
+    connect(btnAdd, &QPushButton::clicked, this, [&](){
+        emit CreateTask();
+    });
+}
+
+TrayView::~TrayView()
+{
+    qDebug() << "TrayView delete";
+}
+
+void TrayView::AddTask(TaskInfo info)
+{
+    this->view->AddTask(info);
 }
 
 void TrayView::ObjectInit()
@@ -30,7 +47,7 @@ void TrayView::ObjectInit()
     trayMenu->addAction(quitAction);
 
     connect(restoreAction, &QAction::triggered, this, &TrayView::showNormal);
-    connect(quitAction, &QAction::triggered, this, &TrayView::close);
+    connect(quitAction, &QAction::triggered, qApp, &QApplication::quit);
 
     trayIcon->setContextMenu(trayMenu);
     trayIcon->show();
@@ -65,7 +82,7 @@ void TrayView::WidgetInit()
 
     QLabel *labelDate = new QLabel("3/17 ", this);
     QLabel *labelWeekday = new QLabel("周一", this);
-    QPushButton *btnAdd = new QPushButton(this);
+    btnAdd = new QPushButton(this);
 
     labelDate->setStyleSheet(R"(
                 background-color: white;
@@ -88,7 +105,7 @@ void TrayView::WidgetInit()
     sLayout = new QStackedLayout(this);
     vLayout->addLayout(sLayout);
 
-    TaskView *view = new TaskView(this);
+    view = new TaskView(this);
     sLayout->addWidget(view);
     QWidget *widget = new QWidget(this);
     sLayout->addWidget(widget);
