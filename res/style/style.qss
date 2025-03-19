@@ -1,0 +1,12 @@
+/* QWidget#tray_view
+{
+    background: white;
+    border-radius: 15px;
+    border: 4px solid #cfcfcf;
+} */
+
+QLabel#label_date
+{
+    /* background-color: ; */
+    /* text:black; */
+}
