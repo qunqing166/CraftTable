@@ -8,20 +8,29 @@
 class TaskInfo
 {
 
-    QString info;
-    QString type = "task";
-    QDateTime time = QDateTime::currentDateTime();
-
 public:
-    TaskInfo();
-    void SetInfo(const QString& info){this->info = info;}
 
-    QString GetInfo(){return info;}
-    QString GetType(){return type + "/" + time.toString();}
+    enum TaskType
+    {
+      task
+    };
+
+    TaskInfo();
+    TaskInfo(const QString& info, const TaskType& type, const QDateTime& dt);
+
+    void SetContent(const QString& info){this->content = info;}
+    QString GetContent(){return content;}
+    QString GetType(){return "task/" + time.toString();}
+
+    QJsonObject ToJson();
 
     static TaskInfo FromJson(const QJsonObject &obj);
 
-    QJsonObject ToJson();
+
+private:
+    QString content;
+    TaskType type = task;
+    QDateTime time = QDateTime::currentDateTime();
 };
 
 #endif // TASKINFO_H

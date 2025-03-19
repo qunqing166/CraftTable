@@ -11,11 +11,11 @@ class TaskView: public QListWidget
 {
     Q_OBJECT
 
-    Q_PROPERTY(int RmvItemHeight READ GetRmvItemHeight WRITE SetRmvItemHeight)
+    Q_PROPERTY(int DeletedItemHeight READ GetDeletedItemHeight WRITE SetDeletedItemHeight)
 
-    int rmvItemHeight;
+    int deletedItemHeight;
 
-    QListWidgetItem *removedItem = nullptr;
+    QListWidgetItem *deletedItem = nullptr;
     QPropertyAnimation *animaRmvItemHeight;
 
 public:
@@ -25,13 +25,12 @@ public:
     void AddTask(TaskInfo info);
 
 private:
-    int GetRmvItemHeight(){return rmvItemHeight;}
-    void SetRmvItemHeight(int height){this->rmvItemHeight = height;}
+    int GetDeletedItemHeight(){return deletedItemHeight;}
+    void SetDeletedItemHeight(int height){this->deletedItemHeight = height;}
+    void OnItemRemoved(QListWidgetItem *item);
 
-    void OnItemRemove(QListWidgetItem *item);
-
-    void Load();
-    void Save();
+    void LoadData();
+    void SaveData();
 
 signals:
     void Edit(TaskViewItem*);

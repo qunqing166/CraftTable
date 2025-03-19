@@ -7,10 +7,7 @@
 MainWindow::MainWindow(QObject *parent)
     : QObject(parent)
 {
-    // this->setFixedSize(900, 600);
-    // this->setFixedSize(250, 500);
     // this->resize(250, 500);
-    this->LoadStyleSheet();
 
     trayView = new TrayView(nullptr);
     taskEditor = new TaskEditWidget(nullptr);
@@ -25,17 +22,5 @@ MainWindow::~MainWindow()
 {
     delete trayView;
     delete taskEditor;
-    // trayView->deleteLater();
-    // taskEditor->deleteLater();
-}
-
-void MainWindow::LoadStyleSheet()
-{
-    QFile file(":/res/style/style.qss");
-    if (file.open(QFile::ReadOnly | QFile::Text)) {
-        QTextStream in(&file);
-        QString styleSheet = in.readAll();
-        // this->setStyleSheet(styleSheet);
-    }
 }
 

@@ -1,4 +1,5 @@
 #include "TaskView.h"
+#include "TimeEditor.h"
 #include "TrayView.h"
 #include <QMenu>
 #include <QAction>
@@ -11,12 +12,14 @@
 #include <QStandardPaths>
 #include <QDir>
 #include <QApplication>
+#include <QPaintEvent>
 
 TrayView::TrayView(QWidget *parent):QWidget(parent)
 {
     this->setFixedSize(250, 500);
     ObjectInit();
     WidgetInit();
+    UpdateDate();
 
     connect(btnAdd, &QPushButton::clicked, this, [&](){
         emit CreateTask();
@@ -25,12 +28,19 @@ TrayView::TrayView(QWidget *parent):QWidget(parent)
 
 TrayView::~TrayView()
 {
-    qDebug() << "TrayView delete";
 }
 
 void TrayView::AddTask(TaskInfo info)
 {
     this->view->AddTask(info);
+}
+
+void TrayView::UpdateDate()
+{
+    QDateTime&& dt = QDateTime::currentDateTime();
+    QString dtStr = QString("%1/%2").arg(dt.date().month()).arg(dt.date().day());
+    labelDate->setText(dtStr);
+    labelWeekday->setText(TimeEditor::GetDayOfWeek(dt.date().dayOfWeek()));
 }
 
 void TrayView::ObjectInit()
@@ -52,6 +62,14 @@ void TrayView::ObjectInit()
     trayIcon->setContextMenu(trayMenu);
     trayIcon->show();
 
+    btnAdd = new QPushButton("+", this);
+    btnAdd->setObjectName("btn_add");
+    btnAdd->setFixedSize(30, 30);
+
+    labelDate = new QLabel(this);
+    labelDate->setObjectName("label_date");
+    labelWeekday = new QLabel(this);
+    labelWeekday->setObjectName("label_weekday");
 
     hoverCheckTimer->start(20);
     connect(hoverCheckTimer, &QTimer::timeout, this, &TrayView::CheckTrayIconMouseHover);
@@ -63,43 +81,20 @@ void TrayView::WidgetInit()
     this->setAttribute(Qt::WA_TranslucentBackground);
     this->setAttribute(Qt::WA_StyledBackground);
 
-    setStyleSheet(R"(
-                TrayView{
-                    background: white;
-                    border-radius: 15px;
-                    border: 4px solid #333;
-                }
-    )");
-
     QVBoxLayout *vLayout = new QVBoxLayout(this);
     vLayout->setAlignment(Qt::AlignTop);
-    vLayout->setContentsMargins(4, 4, 4, 4);
+    vLayout->setContentsMargins(4, 10, 4, 4);
     this->setLayout(vLayout);
 
     QHBoxLayout *hLayout = new QHBoxLayout(this);
     hLayout->setAlignment(Qt::AlignLeft);
     vLayout->addLayout(hLayout);
+    hLayout->setContentsMargins(10, 5, 5, 2);
 
-    QLabel *labelDate = new QLabel("3/17 ", this);
-    QLabel *labelWeekday = new QLabel("周一", this);
-    btnAdd = new QPushButton(this);
-
-    labelDate->setStyleSheet(R"(
-                background-color: white;
-                color:black;
-                font-size:20px;
-                font-family:KaiTi;
-    )");
-    labelWeekday->setStyleSheet(R"(
-                background-color: white;
-                color:#18b8f7;
-                font-size:12px;
-                font-family:KaiTi;
-    )");
     hLayout->addWidget(labelDate);
     hLayout->addWidget(labelWeekday);
     QLabel *labelEmpty = new QLabel(this);
-    labelEmpty->setFixedWidth(80);
+    labelEmpty->setFixedWidth(100);
     hLayout->addWidget(labelEmpty);
     hLayout->addWidget(btnAdd);
     sLayout = new QStackedLayout(this);
@@ -153,10 +148,11 @@ void TrayView::paintEvent(QPaintEvent *paintEvent)
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing);
 
-    // 使用样式表定义的颜色
     painter.setBrush(palette().color(QPalette::Window));
     painter.setPen(Qt::NoPen);
     painter.drawRoundedRect(rect(), 15, 15);
+
+    QWidget::paintEvent(paintEvent);
 }
 
 bool TrayView::eventFilter(QObject *obj, QEvent *event)

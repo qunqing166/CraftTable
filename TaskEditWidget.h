@@ -7,32 +7,48 @@
 #include <QLineEdit>
 #include <QWidget>
 
-enum OpType{
-    edit,
-    create
-};
-
 class TaskEditWidget : public QWidget
 {
     Q_OBJECT
 
-    QLineEdit *lineEditor;
-    TimeEditor *timeEditor;
-    OpType op;
-    TaskViewItem *editedItem = nullptr;
-    TaskInfo info;
-
 public:
+    enum OperationType{
+        edit,
+        create
+    };
+
     explicit TaskEditWidget(QWidget *parent = nullptr);
-    void SetOp(OpType type){this->op = type;}
+
+    void SetOperationType(OperationType type){this->op = type;}
     void SetEditedItem(TaskViewItem* item){this->editedItem = item;}
-    void SetTaskInfo(TaskInfo info);
+    void SetTaskInfo(const TaskInfo& info);
+
+public slots:
 
     void OnTaskEdit(TaskViewItem* item);
     void OnTaskCreate();
 
+private slots:
+
+    void OnBtnConfirmClicked();
+
 signals:
     void TaskCreated(TaskInfo);
+
+private:
+
+    void ObjectInit();
+    void WidgetInit();
+
+    QLineEdit *lineEditor;
+    TimeEditor *timeEditor;
+
+    TaskViewItem *editedItem = nullptr;
+    OperationType op;
+    TaskInfo info;
+
+    QPushButton *btnCancel;
+    QPushButton *btnConfirm;
 };
 
 #endif // TASKEDITWIDGET_H

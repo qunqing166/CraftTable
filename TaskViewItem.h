@@ -16,17 +16,17 @@ class TaskViewItem:public QWidget
     Q_PROPERTY(int BtnWidth READ GetBtnWidth WRITE SetBtnWidth)
     Q_PROPERTY(int BtnHeight READ GetBtnHeight WRITE SetBtnHeight)
 
-    int num;
-    int lastWidth;
     int btnWidth = 0;
     int btnHeight = 0;
-    TaskInfo info;
-    QPushButton *btn1;
-    QPushButton *btn2;
+
+    QPushButton *btnComplete;
+    QPushButton *btnDelete;
     QPropertyAnimation *animaBtnWidth;
     QPropertyAnimation *animaBtnHeight;
     QListWidgetItem *item;
     QLabel *labelData;
+
+    TaskInfo info;
 
 public:
     TaskViewItem(QWidget *parent = nullptr);
@@ -36,18 +36,9 @@ public:
     void SetBtnWidth(int width) { btnWidth = width; }
     int GetBtnHeight() const {return btnHeight;}
     void SetBtnHeight(int height){this->btnHeight = height;}
-    void SetTaskInfo(TaskInfo info){
-        this->labelData->setText(info.GetInfo());
-        this->info = info;
-    }
+    void SetTaskInfo(const TaskInfo& info){this->info = info, this->labelData->setText(this->info.GetContent());}
     TaskInfo GetTaskInfo(){return info;}
-
-
     void SetItem(QListWidgetItem *item){this->item = item;}
-    void SetNum(int num){
-        this->num = num;
-        labelData->setText("label" + num);
-    }
 
 protected:
     virtual void enterEvent(QEnterEvent *event) override;

@@ -20,6 +20,8 @@ class TrayView: public QWidget
     QStackedLayout *sLayout;
     TaskView *view;
     QPushButton *btnAdd;
+    QLabel *labelDate;
+    QLabel *labelWeekday;
 
 public:
     TrayView(QWidget *parent = nullptr);
@@ -28,6 +30,7 @@ public:
     TaskView* GetTaskView(){return view;}
 
     void AddTask(TaskInfo info);
+    void UpdateDate();
 
 private:
     void ObjectInit();

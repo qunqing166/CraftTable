@@ -10,11 +10,11 @@ TaskViewItem::TaskViewItem(QWidget *parent):QWidget(parent)
     WidgetInit();
 
     connect(animaBtnWidth, &QPropertyAnimation::valueChanged, this, [&](){
-        btn1->setFixedWidth(btnWidth);
-        btn2->setFixedWidth(btnWidth);
+        btnComplete->setFixedWidth(btnWidth);
+        btnDelete->setFixedWidth(btnWidth);
     });
-    connect(btn1, &QPushButton::clicked, this, [&](){emit Complete(item);});
-    connect(btn2, &QPushButton::clicked, this, [&](){emit Delete(item);});
+    connect(btnComplete, &QPushButton::clicked, this, [&](){emit Complete(item);});
+    connect(btnDelete, &QPushButton::clicked, this, [&](){emit Delete(item);});
 }
 
 TaskViewItem::TaskViewItem(const TaskInfo &info, QListWidgetItem *item, QWidget *parent)
@@ -26,15 +26,13 @@ TaskViewItem::TaskViewItem(const TaskInfo &info, QListWidgetItem *item, QWidget 
     ObjectInit();
     WidgetInit();
 
-    // this->setAttribute(Qt::WA_StyledBackground);
-
     connect(animaBtnWidth, &QPropertyAnimation::valueChanged, this, [&](){
-        btn1->setFixedWidth(btnWidth);
-        btn2->setFixedWidth(btnWidth);
+        btnComplete->setFixedWidth(btnWidth);
+        btnDelete->setFixedWidth(btnWidth);
     });
 
-    connect(btn1, &QPushButton::clicked, this, [&](){emit Complete(this->item);});
-    connect(btn2, &QPushButton::clicked, this, [&](){emit Delete(this->item);});
+    connect(btnComplete, &QPushButton::clicked, this, [&](){emit Complete(this->item);});
+    connect(btnDelete, &QPushButton::clicked, this, [&](){emit Delete(this->item);});
 }
 
 void TaskViewItem::enterEvent(QEnterEvent *event)
@@ -61,8 +59,8 @@ void TaskViewItem::ObjectInit()
     animaBtnHeight->setStartValue(60);
     animaBtnHeight->setEndValue(0);
 
-    btn1 = new QPushButton("完成", this);
-    btn2 = new QPushButton("删除", this);
+    btnComplete = new QPushButton("完成", this);
+    btnDelete = new QPushButton("删除", this);
     labelData = new QLabel("label", this);
 }
 
@@ -76,15 +74,15 @@ void TaskViewItem::WidgetInit()
     vLayout1->setContentsMargins(0, 0, 0, 0);
     hLayout1->addWidget(widget);
     hLayout1->addLayout(vLayout1);
-    vLayout1->addWidget(btn1);
-    vLayout1->addWidget(btn2);
-    btn1->setFixedWidth(0);
-    btn2->setFixedWidth(0);
-    btn1->setStyleSheet(R"(
+    vLayout1->addWidget(btnComplete);
+    vLayout1->addWidget(btnDelete);
+    btnComplete->setFixedWidth(0);
+    btnDelete->setFixedWidth(0);
+    btnComplete->setStyleSheet(R"(
             background-color:#cfcfcf;
             color:black;
     )");
-    btn2->setStyleSheet(R"(
+    btnDelete->setStyleSheet(R"(
             background-color:#cfcfcf;
             color:black;
     )");
@@ -101,7 +99,7 @@ void TaskViewItem::WidgetInit()
             border-radius:3px;
     )");
 
-    labelData = new QLabel(this->info.GetInfo(), this);
+    labelData = new QLabel(this->info.GetContent(), this);
     QLabel *labelDate = new QLabel("2025/2/18  21:00", this);
 
     QHBoxLayout *hLayout = new QHBoxLayout(this);

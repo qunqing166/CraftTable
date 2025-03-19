@@ -48,7 +48,6 @@ protected:
 
 private:
 
-    //传入缩放因子并打开缩放定时器
     void OPenScaleTimer();
     void PaintAnimaStop(QPainter *painter);
     void PaintAnimaWork(QPainter *painter);
@@ -111,9 +110,11 @@ public:
     QDateTime GetDateTime();
     QString GetTimeStr();
 
+    static QString GetDayOfWeek(int day);
+
 private:
     void UpdateCurrenInfor(QDateTime dt, NumSelector::InforType type);
-    QString GetDayOfWeek(int day);
+
     void DtEditInit();
     void TimeEditInit();
     void DateEditInit();

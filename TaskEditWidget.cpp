@@ -6,9 +6,61 @@
 #include <QPushButton>
 #include <QVBoxLayout>
 
-
 TaskEditWidget::TaskEditWidget(QWidget *parent)
     : QWidget{parent}
+{
+    ObjectInit();
+    WidgetInit();
+
+    connect(btnCancel, &QPushButton::clicked, this, [&](){this->hide();});
+    connect(btnConfirm, &QPushButton::clicked, this, &TaskEditWidget::OnBtnConfirmClicked);
+}
+
+void TaskEditWidget::SetTaskInfo(const TaskInfo& info)
+{
+    this->info = info;
+    this->lineEditor->setText(this->info.GetContent());
+}
+
+void TaskEditWidget::OnTaskEdit(TaskViewItem *item)
+{
+    this->SetTaskInfo(item->GetTaskInfo());
+    this->SetEditedItem(item);
+    this->SetOperationType(OperationType::edit);
+    this->show();
+}
+
+void TaskEditWidget::OnTaskCreate()
+{
+    this->SetTaskInfo(TaskInfo());
+    this->SetOperationType(OperationType::create);
+    this->show();
+}
+
+void TaskEditWidget::OnBtnConfirmClicked()
+{
+    TaskInfo info;
+    info.SetContent(lineEditor->text());
+    qDebug() << info.GetContent();
+    if(op == OperationType::edit)
+    {
+        editedItem->SetTaskInfo(info);
+        editedItem = nullptr;
+    }
+    else if(op == OperationType::create)
+    {
+        emit TaskCreated(info);
+    }
+    this->hide();
+}
+
+void TaskEditWidget::ObjectInit()
+{
+    btnCancel = new QPushButton("取消", this);
+    btnConfirm = new QPushButton("确认", this);
+}
+
+void TaskEditWidget::WidgetInit()
 {
     QVBoxLayout *vLayout = new QVBoxLayout(this);
     this->setLayout(vLayout);
@@ -35,56 +87,9 @@ TaskEditWidget::TaskEditWidget(QWidget *parent)
     timeEditor = new TimeEditor(this);
     vLayout->addWidget(timeEditor);
 
-    // QLabel *labelEmpty = new QLabel(this);
-    // labelEmpty->setFixedHeight(200);
-    // vLayout->addWidget(labelEmpty);
-
     QHBoxLayout *hLayout2 = new QHBoxLayout(this);
     vLayout->addLayout(hLayout2);
 
-    QPushButton *btn1 = new QPushButton("取消", this);
-    QPushButton *btn2 = new QPushButton("确认", this);
-    hLayout2->addWidget(btn1);
-    hLayout2->addWidget(btn2);
-
-    connect(btn1, &QPushButton::clicked, this, [&](){
-        this->hide();
-    });
-    connect(btn2, &QPushButton::clicked, this, [&](){
-        TaskInfo info;
-        info.SetInfo(lineEditor->text());
-        qDebug() << info.GetInfo();
-        if(op == OpType::edit)
-        {
-            editedItem->SetTaskInfo(info);
-            editedItem = nullptr;
-        }
-        else if(op == OpType::create)
-        {
-            emit TaskCreated(info);
-        }
-        this->hide();
-    });
-}
-void TaskEditWidget::SetTaskInfo(TaskInfo info)
-{
-    this->info = info;
-    this->lineEditor->setText(info.GetInfo());
-}
-
-void TaskEditWidget::OnTaskEdit(TaskViewItem *item)
-{
-    this->SetTaskInfo(item->GetTaskInfo());
-    this->SetEditedItem(item);
-    this->SetOp(OpType::edit);
-    this->show();
-    qDebug() << "edit";
-}
-
-void TaskEditWidget::OnTaskCreate()
-{
-    this->SetTaskInfo(TaskInfo());
-    this->SetOp(OpType::create);
-    this->show();
-    qDebug() << "creat";
+    hLayout2->addWidget(btnCancel);
+    hLayout2->addWidget(btnConfirm);
 }

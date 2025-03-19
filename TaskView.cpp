@@ -7,7 +7,7 @@
 
 TaskView::TaskView(QWidget *parent):QListWidget(parent)
 {
-    animaRmvItemHeight = new QPropertyAnimation(this, "RmvItemHeight", this);
+    animaRmvItemHeight = new QPropertyAnimation(this, "DeletedItemHeight", this);
     animaRmvItemHeight->setStartValue(60);
     animaRmvItemHeight->setEndValue(0);
 
@@ -16,64 +16,48 @@ TaskView::TaskView(QWidget *parent):QListWidget(parent)
     this->setSelectionMode(QAbstractItemView::SingleSelection); // 单选模式
     this->setDefaultDropAction(Qt::MoveAction); // 默认拖拽操作为移动
 
-    this->setStyleSheet(R"(
-            background-color:white;
-    )");
+    // 关闭滚动条
     this->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
-    // for(int i = 0; i < 10; i++)
-    // {
-    //     QListWidgetItem *item = new QListWidgetItem(this);
-    //     TaskInfo info;
-    //     info.SetInfo("nmslughfsiodhfoasjspoajkjshdfloajsdlosihjfoisa" + QString::number(i));
-    //     TaskViewItem *vItem = new TaskViewItem(info, item, this);
-    //     this->addItem(item);
-    //     this->setItemWidget(item, vItem);
-
-    //     connect(vItem, &TaskViewItem::Delete, this, &TaskView::OnItemRemove);
-    //     connect(vItem, &TaskViewItem::Complete, this, &TaskView::OnItemRemove);
-    //     connect(vItem, &TaskViewItem::Edit, this, [&](TaskViewItem* item){emit this->Edit(item);});
-    // }
-    Load();
+    LoadData();
 
     connect(animaRmvItemHeight, &QPropertyAnimation::valueChanged, this, [&](){
-        removedItem->setSizeHint(QSize(200, rmvItemHeight));
+        deletedItem->setSizeHint(QSize(200, deletedItemHeight));
     });
     connect(animaRmvItemHeight, &QPropertyAnimation::finished, this, [&](){
-        delete removedItem;
+        delete deletedItem;
     });
-
 }
 
 TaskView::~TaskView()
 {
-    Save();
+    SaveData();
 }
 
 void TaskView::AddTask(TaskInfo info)
 {
     QListWidgetItem *item = new QListWidgetItem(this);
-    info.SetInfo(info.GetInfo());
+    info.SetContent(info.GetContent());
     TaskViewItem *vItem = new TaskViewItem(info, item, this);
     this->addItem(item);
     this->setItemWidget(item, vItem);
 
-    connect(vItem, &TaskViewItem::Delete, this, &TaskView::OnItemRemove);
-    connect(vItem, &TaskViewItem::Complete, this, &TaskView::OnItemRemove);
+    connect(vItem, &TaskViewItem::Delete, this, &TaskView::OnItemRemoved);
+    connect(vItem, &TaskViewItem::Complete, this, &TaskView::OnItemRemoved);
     connect(vItem, &TaskViewItem::Edit, this, [&](TaskViewItem* item){emit this->Edit(item);});
 }
 
-void TaskView::OnItemRemove(QListWidgetItem *item)
+void TaskView::OnItemRemoved(QListWidgetItem *item)
 {
-    removedItem = item;
+    deletedItem = item;
     this->itemWidget(item)->disconnect();
     this->itemWidget(item)->deleteLater();
     this->removeItemWidget(item);
-    animaRmvItemHeight->setStartValue(removedItem->sizeHint().height());
+    animaRmvItemHeight->setStartValue(deletedItem->sizeHint().height());
     animaRmvItemHeight->start();
 }
 
-void TaskView::Load()
+void TaskView::LoadData()
 {
     QJsonObject obj = FileManagement::Instance()->LoadJsonFile();
 
@@ -85,7 +69,7 @@ void TaskView::Load()
     }
 }
 
-void TaskView::Save()
+void TaskView::SaveData()
 {
     QJsonObject obj;
     obj.insert("num", this->count());
