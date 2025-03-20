@@ -11,6 +11,9 @@ TaskView::TaskView(QWidget *parent):QListWidget(parent)
     animaRmvItemHeight->setStartValue(60);
     animaRmvItemHeight->setEndValue(0);
 
+    taskCheckTimer = new QTimer(this);
+    taskCheckTimer->start(1000 * 60 * 5);
+
     this->setDragEnabled(true);        // 允许拖拽
     this->setAcceptDrops(true);        // 允许放置
     this->setSelectionMode(QAbstractItemView::SingleSelection); // 单选模式
@@ -26,6 +29,18 @@ TaskView::TaskView(QWidget *parent):QListWidget(parent)
     });
     connect(animaRmvItemHeight, &QPropertyAnimation::finished, this, [&](){
         delete deletedItem;
+    });
+    connect(taskCheckTimer, &QTimer::timeout, this, [&](){
+        for(int i = 0; i < this->count(); i++)
+        {
+            QListWidgetItem *item = this->item(i);
+            TaskViewItem *vItem = dynamic_cast<TaskViewItem*>(this->itemWidget(item));
+            TaskInfo itemInfo = vItem->GetTaskInfo();
+            if(itemInfo.GetTime().date() < QDate::currentDate())
+            {
+                OnItemRemoved(item);
+            }
+        }
     });
 }
 

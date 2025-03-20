@@ -6,6 +6,7 @@
 #include <QObject>
 #include <QListWidget>
 #include <QPropertyAnimation>
+#include <QTimer>
 
 class TaskView: public QListWidget
 {
@@ -17,6 +18,8 @@ class TaskView: public QListWidget
 
     QListWidgetItem *deletedItem = nullptr;
     QPropertyAnimation *animaRmvItemHeight;
+
+    QTimer *taskCheckTimer;
 
 public:
     TaskView(QWidget *parent = nullptr);

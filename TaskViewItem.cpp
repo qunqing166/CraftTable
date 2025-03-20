@@ -3,6 +3,7 @@
 #include <QMouseEvent>
 #include <QPushButton>
 #include <QVBoxLayout>
+#include <QRandomGenerator>
 
 TaskViewItem::TaskViewItem(QWidget *parent):QWidget(parent)
 {
@@ -61,7 +62,12 @@ void TaskViewItem::ObjectInit()
 
     btnComplete = new QPushButton("完成", this);
     btnDelete = new QPushButton("删除", this);
-    labelData = new QLabel("label", this);
+
+    labelContent = new QLabel(this);
+    labelContent->setObjectName("task_content");
+    labelDate = new QLabel(this);
+    labelDate->setObjectName("task_date");
+    UpdateInfo();
 }
 
 void TaskViewItem::WidgetInit()
@@ -78,29 +84,15 @@ void TaskViewItem::WidgetInit()
     vLayout1->addWidget(btnDelete);
     btnComplete->setFixedWidth(0);
     btnDelete->setFixedWidth(0);
-    btnComplete->setStyleSheet(R"(
-            background-color:#cfcfcf;
-            color:black;
-    )");
-    btnDelete->setStyleSheet(R"(
-            background-color:#cfcfcf;
-            color:black;
-    )");
+    btnComplete->setObjectName("btn_item");
+    btnDelete->setObjectName("btn_item");
 
-    widget->setStyleSheet(R"(
-            background-color:#fc9e98;
-            margin: 2px;
-            border-radius: 15px;
-    )");
+    int id = QRandomGenerator::global()->bounded(4) + 1;
+    widget->setObjectName("task_item" + QString::number(id));
+
     QLabel *label1 = new QLabel(this);
-    label1->setFixedWidth(6);
-    label1->setStyleSheet(R"(
-            background-color: yellow;
-            border-radius:3px;
-    )");
-
-    labelData = new QLabel(this->info.GetContent(), this);
-    QLabel *labelDate = new QLabel("2025/2/18  21:00", this);
+    label1->setFixedWidth(4);
+    label1->setObjectName("task_label" + QString::number(id));
 
     QHBoxLayout *hLayout = new QHBoxLayout(this);
     widget->setLayout(hLayout);
@@ -109,7 +101,7 @@ void TaskViewItem::WidgetInit()
 
     hLayout->addWidget(label1);
     hLayout->addLayout(vLayout);
-    vLayout->addWidget(labelData);
+    vLayout->addWidget(labelContent);
     vLayout->addWidget(labelDate);
 }
 
@@ -127,4 +119,19 @@ void TaskViewItem::HideBtn()
     animaBtnWidth->setStartValue(btnWidth);
     animaBtnWidth->setEndValue(0);
     animaBtnWidth->start();
+}
+
+void TaskViewItem::UpdateInfo()
+{
+    this->labelContent->setText(this->info.GetContent());
+    QString infoStr = QString("%1 | %2年%3月%4日")
+                          .arg(info.GetType())
+                          .arg(info.GetTime().date().year())
+                          .arg(info.GetTime().date().month())
+                          .arg(info.GetTime().date().day());
+    this->labelDate->setText(infoStr);
+}
+void TaskViewItem::SetTaskInfo(const TaskInfo &info) {
+    this->info = info;
+    UpdateInfo();
 }

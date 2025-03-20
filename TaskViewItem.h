@@ -24,7 +24,8 @@ class TaskViewItem:public QWidget
     QPropertyAnimation *animaBtnWidth;
     QPropertyAnimation *animaBtnHeight;
     QListWidgetItem *item;
-    QLabel *labelData;
+    QLabel *labelContent;
+    QLabel *labelDate;
 
     TaskInfo info;
 
@@ -36,7 +37,7 @@ public:
     void SetBtnWidth(int width) { btnWidth = width; }
     int GetBtnHeight() const {return btnHeight;}
     void SetBtnHeight(int height){this->btnHeight = height;}
-    void SetTaskInfo(const TaskInfo& info){this->info = info, this->labelData->setText(this->info.GetContent());}
+    void SetTaskInfo(const TaskInfo &info);
     TaskInfo GetTaskInfo(){return info;}
     void SetItem(QListWidgetItem *item){this->item = item;}
 
@@ -52,6 +53,8 @@ private:
 
     void ShowBtn();
     void HideBtn();
+
+    void UpdateInfo();
 
 signals:
     void Complete(QListWidgetItem*);

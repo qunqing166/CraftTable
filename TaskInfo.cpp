@@ -15,7 +15,6 @@ TaskInfo TaskInfo::FromJson(const QJsonObject &obj)
 {
     TaskInfo info;
     info.content = obj["info"].toString();
-
     QString typeStr = obj["type"].toString();
     if(typeStr == "task")info.type = TaskType::task;
 

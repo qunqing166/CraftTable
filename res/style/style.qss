@@ -29,11 +29,68 @@ QLabel#label_date{
 
 QLabel#label_weekday{
     background-color: white;
-    color:#18b8f7;
-    font-size:12px;
-    font-family:KaiTi;
+    color:#d998ff;
+    font-size:15px;
+    /* font-family:KaiTi; */
 }
 
 TaskView{
     background-color: white;
+}
+
+QPushButton#btn_item{
+    background-color:#cfcfcf;
+    color:black;
+}
+
+QLabel#task_content{
+    color: black;
+}
+
+QLabel#task_date{
+    color: #525252;
+}
+
+QWidget#task_item1{
+    background-color:#b8d7fc;
+    margin: 2px;
+    border-radius: 15px;
+}
+
+QWidget#task_item2{
+    background-color:#cfffb9;
+    margin: 2px;
+    border-radius: 15px;
+}
+
+QWidget#task_item3{
+    background-color:#c7c7ff;
+    margin: 2px;
+    border-radius: 15px;
+}
+
+QWidget#task_item4{
+    background-color:#ffa49e;
+    margin: 2px;
+    border-radius: 15px;
+}
+
+QLabel#task_label1{
+    background-color: #7ea3cf;
+    border-radius:2px;
+}
+
+QLabel#task_label2{
+    background-color: #98da7a;
+    border-radius:2px;
+}
+
+QLabel#task_label3{
+    background-color: #8382f9;
+    border-radius:2px;
+}
+
+QLabel#task_label4{
+    background-color: #c7706a;
+    border-radius:2px;
 }

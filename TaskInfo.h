@@ -20,7 +20,8 @@ public:
 
     void SetContent(const QString& info){this->content = info;}
     QString GetContent(){return content;}
-    QString GetType(){return "task/" + time.toString();}
+    QString GetType(){return "task";}
+    QDateTime GetTime(){return time;}
 
     QJsonObject ToJson();
 
