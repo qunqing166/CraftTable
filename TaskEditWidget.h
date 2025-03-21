@@ -53,6 +53,7 @@ private:
     QLabel *labelType;
     // QPushButton **btnTypes;
     QVector<QPushButton*>btnTypes;
+    TaskInfo::TaskType crtType = TaskInfo::task;
 };
 
 #endif // TASKEDITWIDGET_H

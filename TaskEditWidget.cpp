@@ -14,8 +14,12 @@ TaskEditWidget::TaskEditWidget(QWidget *parent)
 
     connect(btnCancel, &QPushButton::clicked, this, [&](){this->hide();});
     connect(btnConfirm, &QPushButton::clicked, this, &TaskEditWidget::OnBtnConfirmClicked);
-    connect(btnTypes[0], &QPushButton::clicked, this, [&](){this->labelType->setText("任务");});
-    connect(btnTypes[1], &QPushButton::clicked, this, [&](){this->labelType->setText("倒数日");});
+    connect(btnTypes[0], &QPushButton::clicked, this, [&](){
+        this->labelType->setText("任务");crtType = TaskInfo::task;
+    });
+    connect(btnTypes[1], &QPushButton::clicked, this, [&](){
+        this->labelType->setText("倒数日");crtType = TaskInfo::countdown_day;
+    });
 }
 
 void TaskEditWidget::SetTaskInfo(const TaskInfo& info)
@@ -41,9 +45,11 @@ void TaskEditWidget::OnTaskCreate()
 
 void TaskEditWidget::OnBtnConfirmClicked()
 {
-    TaskInfo info;
-    info.SetContent(lineEditor->text());
-    qDebug() << info.GetContent();
+    TaskInfo info{lineEditor->text(), this->crtType, timeEditor->GetDateTime()};
+    // info.SetContent(lineEditor->text());
+    // info.Set
+    // qDebug() << info.GetContent();
+
     if(op == OperationType::edit)
     {
         editedItem->SetTaskInfo(info);

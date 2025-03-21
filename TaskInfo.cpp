@@ -25,12 +25,14 @@ TaskInfo TaskInfo::FromJson(const QJsonObject &obj)
 
 QMap<TaskInfo::TaskType, QString> TaskInfo::typeToStr =
 {
-    {TaskInfo::TaskType::task, "task"},
-    {TaskInfo::TaskType::countdown_day, "countdown_day"}
+    {TaskInfo::TaskType::task, "任务"},
+    {TaskInfo::TaskType::countdown_day, "倒数日"}
+    // {TaskInfo::TaskType::task, "task"},
+    // {TaskInfo::TaskType::countdown_day, "countdown_day"}
 };
 
 QJsonObject TaskInfo::ToJson() {
-    return QJsonObject{{"info", content}, {"task", this->GetType()}, {"time", time.toString()}};
+    return QJsonObject{{"info", content}, {"type", this->GetType()}, {"time", time.toString()}};
 }
 QString TaskInfo::GetType()
 {

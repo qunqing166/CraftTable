@@ -77,9 +77,10 @@ void TrayView::ObjectInit()
 
 void TrayView::WidgetInit()
 {
-    this->setWindowFlags(Qt::FramelessWindowHint);
+    // this->setWindowFlags(Qt::FramelessWindowHint);
     this->setAttribute(Qt::WA_TranslucentBackground);
     this->setAttribute(Qt::WA_StyledBackground);
+    this->setWindowFlags(Qt::Tool | Qt::FramelessWindowHint);
 
     QVBoxLayout *vLayout = new QVBoxLayout(this);
     vLayout->setAlignment(Qt::AlignTop);
