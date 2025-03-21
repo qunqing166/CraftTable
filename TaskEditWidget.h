@@ -49,6 +49,10 @@ private:
 
     QPushButton *btnCancel;
     QPushButton *btnConfirm;
+
+    QLabel *labelType;
+    // QPushButton **btnTypes;
+    QVector<QPushButton*>btnTypes;
 };
 
 #endif // TASKEDITWIDGET_H

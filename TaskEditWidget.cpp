@@ -14,6 +14,8 @@ TaskEditWidget::TaskEditWidget(QWidget *parent)
 
     connect(btnCancel, &QPushButton::clicked, this, [&](){this->hide();});
     connect(btnConfirm, &QPushButton::clicked, this, &TaskEditWidget::OnBtnConfirmClicked);
+    connect(btnTypes[0], &QPushButton::clicked, this, [&](){this->labelType->setText("任务");});
+    connect(btnTypes[1], &QPushButton::clicked, this, [&](){this->labelType->setText("倒数日");});
 }
 
 void TaskEditWidget::SetTaskInfo(const TaskInfo& info)
@@ -58,6 +60,15 @@ void TaskEditWidget::ObjectInit()
 {
     btnCancel = new QPushButton("取消", this);
     btnConfirm = new QPushButton("确认", this);
+    labelType = new QLabel("任务", this);
+    labelType->setAlignment(Qt::AlignCenter);
+
+    QStringList btnText{"任务", "倒数日"};
+    btnTypes.resize(btnText.count());
+    for(int i = 0; i < btnText.count(); ++i)
+    {
+        btnTypes[i] = new QPushButton(btnText[i], this);
+    }
 }
 
 void TaskEditWidget::WidgetInit()
@@ -66,19 +77,25 @@ void TaskEditWidget::WidgetInit()
     this->setLayout(vLayout);
     vLayout->setAlignment(Qt::AlignTop);
 
+
     QHBoxLayout *hLayout = new QHBoxLayout(this);
     vLayout->addLayout(hLayout);
 
-    QPushButton *btnType1 = new QPushButton(this);
-    QPushButton *btnType2 = new QPushButton(this);
-    QPushButton *btnType3 = new QPushButton(this);
-    QPushButton *btnType4 = new QPushButton(this);
-    hLayout->addWidget(btnType1);
-    hLayout->addWidget(btnType2);
-    hLayout->addWidget(btnType3);
-    hLayout->addWidget(btnType4);
+    for(int i = 0; i < btnTypes.count(); ++i)
+    {
+        hLayout->addWidget(btnTypes[i]);
+    }
 
-    vLayout->addWidget(new QLabel("task", this));
+    QFrame *frame = new QFrame(this);
+    frame->setFixedHeight(2);
+    frame->setStyleSheet(R"(
+        background-color:white;
+    )");
+    vLayout->addWidget(frame);
+
+    vLayout->addWidget(labelType);
+
+    vLayout->addWidget(new QLabel("content", this));
     lineEditor = new QLineEdit(this);
     vLayout->addWidget(lineEditor);
 

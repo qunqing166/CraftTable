@@ -12,7 +12,7 @@ TaskView::TaskView(QWidget *parent):QListWidget(parent)
     animaRmvItemHeight->setEndValue(0);
 
     taskCheckTimer = new QTimer(this);
-    taskCheckTimer->start(1000 * 60 * 5);
+    taskCheckTimer->start(1000 * 60 * 1);
 
     this->setDragEnabled(true);        // 允许拖拽
     this->setAcceptDrops(true);        // 允许放置
@@ -30,18 +30,7 @@ TaskView::TaskView(QWidget *parent):QListWidget(parent)
     connect(animaRmvItemHeight, &QPropertyAnimation::finished, this, [&](){
         delete deletedItem;
     });
-    connect(taskCheckTimer, &QTimer::timeout, this, [&](){
-        for(int i = 0; i < this->count(); i++)
-        {
-            QListWidgetItem *item = this->item(i);
-            TaskViewItem *vItem = dynamic_cast<TaskViewItem*>(this->itemWidget(item));
-            TaskInfo itemInfo = vItem->GetTaskInfo();
-            if(itemInfo.GetTime().date() < QDate::currentDate())
-            {
-                OnItemRemoved(item);
-            }
-        }
-    });
+    connect(taskCheckTimer, &QTimer::timeout, this, &TaskView::CheckTaskTimeOut);
 }
 
 TaskView::~TaskView()
@@ -57,12 +46,12 @@ void TaskView::AddTask(TaskInfo info)
     this->addItem(item);
     this->setItemWidget(item, vItem);
 
-    connect(vItem, &TaskViewItem::Delete, this, &TaskView::OnItemRemoved);
-    connect(vItem, &TaskViewItem::Complete, this, &TaskView::OnItemRemoved);
+    connect(vItem, &TaskViewItem::Delete, this, &TaskView::RemoveItem);
+    connect(vItem, &TaskViewItem::Complete, this, &TaskView::RemoveItem);
     connect(vItem, &TaskViewItem::Edit, this, [&](TaskViewItem* item){emit this->Edit(item);});
 }
 
-void TaskView::OnItemRemoved(QListWidgetItem *item)
+void TaskView::RemoveItem(QListWidgetItem *item)
 {
     deletedItem = item;
     this->itemWidget(item)->disconnect();
@@ -70,6 +59,31 @@ void TaskView::OnItemRemoved(QListWidgetItem *item)
     this->removeItemWidget(item);
     animaRmvItemHeight->setStartValue(deletedItem->sizeHint().height());
     animaRmvItemHeight->start();
+}
+
+void TaskView::CheckTaskTimeOut()
+{
+    bool isChanged = false;
+    for(int i = this->count() - 1; i >= 0; --i)
+    {
+        QListWidgetItem *item = this->item(i);
+        TaskViewItem *vItem = dynamic_cast<TaskViewItem*>(this->itemWidget(item));
+        TaskInfo itemInfo = vItem->GetTaskInfo();
+        if(itemInfo.GetTime().date() < QDate::currentDate())
+        {
+            deletedItem = item;
+            this->itemWidget(item)->disconnect();
+            this->itemWidget(item)->deleteLater();
+            this->removeItemWidget(item);
+            delete item;
+            isChanged = true;
+        }
+    }
+
+    if(isChanged)
+    {
+        SaveData();
+    }
 }
 
 void TaskView::LoadData()
