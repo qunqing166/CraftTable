@@ -1,6 +1,7 @@
 #ifndef TASKVIEW_H
 #define TASKVIEW_H
 
+#include "TaskEditDialog.h"
 #include "TaskViewItem.h"
 
 #include <QObject>
@@ -21,11 +22,15 @@ class TaskView: public QListWidget
 
     QTimer *taskCheckTimer;
 
+    TaskViewItem* editedItem = nullptr;
+
 public:
     TaskView(QWidget *parent = nullptr);
     ~TaskView();
 
     void AddTask(TaskInfo info);
+
+    void EditTaskInfo(TaskEditDialog::OperationType);
 
 private:
     int GetDeletedItemHeight(){return deletedItemHeight;}

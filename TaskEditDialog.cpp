@@ -1,4 +1,4 @@
-#include "TaskEditWidget.h"
+#include "TaskEditDialog.h"
 #include "TaskInfo.h"
 #include "TimeEditor.h"
 #include <QLabel>
@@ -6,14 +6,14 @@
 #include <QPushButton>
 #include <QVBoxLayout>
 
-TaskEditWidget::TaskEditWidget(QWidget *parent)
-    : QWidget{parent}
+TaskEditDialog::TaskEditDialog(QWidget *parent)
+    : QDialog{parent}
 {
     ObjectInit();
     WidgetInit();
 
     connect(btnCancel, &QPushButton::clicked, this, [&](){this->hide();});
-    connect(btnConfirm, &QPushButton::clicked, this, &TaskEditWidget::OnBtnConfirmClicked);
+    connect(btnConfirm, &QPushButton::clicked, this, &TaskEditDialog::OnBtnConfirmClicked);
     connect(btnTypes[0], &QPushButton::clicked, this, [&](){
         this->labelType->setText("任务");crtType = TaskInfo::task;
     });
@@ -22,18 +22,23 @@ TaskEditWidget::TaskEditWidget(QWidget *parent)
     });
 }
 
-TaskEditWidget::~TaskEditWidget()
+TaskEditDialog::~TaskEditDialog()
 {
     qDebug() << "TaskEditWidget delete";
 }
 
-void TaskEditWidget::SetTaskInfo(const TaskInfo& info)
+void TaskEditDialog::SetTaskInfo(const TaskInfo& info)
 {
     this->info = info;
     this->lineEditor->setText(this->info.GetContent());
 }
 
-void TaskEditWidget::OnTaskEdit(TaskViewItem *item)
+TaskInfo TaskEditDialog::GetTaskInfo()
+{
+    return TaskInfo{lineEditor->text(), this->crtType, timeEditor->GetDateTime()};
+}
+
+void TaskEditDialog::OnTaskEdit(TaskViewItem *item)
 {
     this->SetTaskInfo(item->GetTaskInfo());
     this->SetEditedItem(item);
@@ -41,33 +46,26 @@ void TaskEditWidget::OnTaskEdit(TaskViewItem *item)
     this->show();
 }
 
-void TaskEditWidget::OnTaskCreate()
+void TaskEditDialog::OnTaskCreate()
 {
     this->SetTaskInfo(TaskInfo());
     this->SetOperationType(OperationType::create);
     this->show();
 }
 
-void TaskEditWidget::OnBtnConfirmClicked()
+void TaskEditDialog::OnBtnConfirmClicked()
 {
-    TaskInfo info{lineEditor->text(), this->crtType, timeEditor->GetDateTime()};
-    // info.SetContent(lineEditor->text());
-    // info.Set
-    // qDebug() << info.GetContent();
-
-    if(op == OperationType::edit)
-    {
-        editedItem->SetTaskInfo(info);
-        editedItem = nullptr;
-    }
-    else if(op == OperationType::create)
-    {
-        emit TaskCreated(info);
-    }
+    this->setResult(QDialog::Accepted);
     this->hide();
 }
 
-void TaskEditWidget::ObjectInit()
+void TaskEditDialog::closeEvent(QCloseEvent *event)
+{
+    this->hide();
+    event->ignore();
+}
+
+void TaskEditDialog::ObjectInit()
 {
     btnCancel = new QPushButton("取消", this);
     btnConfirm = new QPushButton("确认", this);
@@ -82,7 +80,7 @@ void TaskEditWidget::ObjectInit()
     }
 }
 
-void TaskEditWidget::WidgetInit()
+void TaskEditDialog::WidgetInit()
 {
     QVBoxLayout *vLayout = new QVBoxLayout(this);
     this->setLayout(vLayout);

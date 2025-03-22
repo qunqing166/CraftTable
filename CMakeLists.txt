@@ -27,7 +27,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         TaskView.h TaskView.cpp
         TaskViewItem.h TaskViewItem.cpp
         TaskInfo.h TaskInfo.cpp
-        TaskEditWidget.h TaskEditWidget.cpp
+        TaskEditDialog.h TaskEditDialog.cpp
         TimeEditor.h TimeEditor.cpp
         FileManagement.h FileManagement.cpp
 

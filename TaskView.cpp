@@ -48,7 +48,32 @@ void TaskView::AddTask(TaskInfo info)
 
     connect(vItem, &TaskViewItem::Delete, this, &TaskView::RemoveItem);
     connect(vItem, &TaskViewItem::Complete, this, &TaskView::RemoveItem);
-    connect(vItem, &TaskViewItem::Edit, this, [&](TaskViewItem* item){emit this->Edit(item);});
+    connect(vItem, &TaskViewItem::Edit, this, [&](TaskViewItem* item){
+        this->editedItem = item;
+        EditTaskInfo(TaskEditDialog::edit);
+    });
+}
+
+void TaskView::EditTaskInfo(TaskEditDialog::OperationType type)
+{
+    TaskEditDialog editor;
+    editor.resize(250, 500);
+    editor.SetOperationType(type);
+    if(type == TaskEditDialog::edit)
+    {
+        editor.SetTaskInfo(editedItem->GetTaskInfo());
+    }
+    if(editor.exec() == QDialog::Accepted)
+    {
+        if(editor.GetOperationType() == TaskEditDialog::create)
+        {
+            this->AddTask(editor.GetTaskInfo());
+        }
+        else if(editor.GetOperationType() == TaskEditDialog::edit)
+        {
+            editedItem->SetTaskInfo(editor.GetTaskInfo());
+        }
+    }
 }
 
 void TaskView::RemoveItem(QListWidgetItem *item)

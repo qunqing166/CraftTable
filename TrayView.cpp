@@ -21,9 +21,7 @@ TrayView::TrayView(QWidget *parent):QWidget(parent)
     WidgetInit();
     UpdateDate();
 
-    connect(btnAdd, &QPushButton::clicked, this, [&](){
-        emit CreateTask();
-    });
+    connect(btnAdd, &QPushButton::clicked, this, &TrayView::OnBtnAddClicked);
 }
 
 TrayView::~TrayView()
@@ -143,6 +141,11 @@ void TrayView::CheckTrayIconMouseHover()
                 this->hide();
         }
     }
+}
+
+void TrayView::OnBtnAddClicked()
+{
+    this->view->EditTaskInfo(TaskEditDialog::create);
 }
 
 void TrayView::paintEvent(QPaintEvent *paintEvent)

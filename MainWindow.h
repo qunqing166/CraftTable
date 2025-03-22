@@ -3,7 +3,6 @@
 
 #include <QMainWindow>
 #include <QSystemTrayIcon>
-#include "TaskEditWidget.h"
 #include "TrayView.h"
 
 class MainWindow : public QObject
@@ -11,7 +10,6 @@ class MainWindow : public QObject
     Q_OBJECT
 
     TrayView *trayView;
-    TaskEditWidget *taskEditor;
 
 public:
     MainWindow(QObject *parent = nullptr);

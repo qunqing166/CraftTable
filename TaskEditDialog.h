@@ -1,13 +1,14 @@
-#ifndef TASKEDITWIDGET_H
-#define TASKEDITWIDGET_H
+#ifndef TASKEDITDIALOG_H
+#define TASKEDITDIALOG_H
 
 #include "TaskViewItem.h"
 #include "TimeEditor.h"
 
 #include <QLineEdit>
 #include <QWidget>
+#include <QDialog>
 
-class TaskEditWidget : public QWidget
+class TaskEditDialog : public QDialog
 {
     Q_OBJECT
 
@@ -17,12 +18,15 @@ public:
         create
     };
 
-    explicit TaskEditWidget(QWidget *parent = nullptr);
-    ~TaskEditWidget();
+    explicit TaskEditDialog(QWidget *parent = nullptr);
+    ~TaskEditDialog();
 
     void SetOperationType(OperationType type){this->op = type;}
     void SetEditedItem(TaskViewItem* item){this->editedItem = item;}
     void SetTaskInfo(const TaskInfo& info);
+
+    TaskInfo GetTaskInfo();
+    OperationType GetOperationType(){return op;};
 
 public slots:
 
@@ -32,6 +36,9 @@ public slots:
 private slots:
 
     void OnBtnConfirmClicked();
+
+protected:
+    virtual void closeEvent(QCloseEvent *event) override;
 
 signals:
     void TaskCreated(TaskInfo);
@@ -45,7 +52,7 @@ private:
     TimeEditor *timeEditor;
 
     TaskViewItem *editedItem = nullptr;
-    OperationType op;
+    OperationType op = create;
     TaskInfo info;
 
     QPushButton *btnCancel;
@@ -57,4 +64,4 @@ private:
     TaskInfo::TaskType crtType = TaskInfo::task;
 };
 
-#endif // TASKEDITWIDGET_H
+#endif // TASKEDITDIALOG_H

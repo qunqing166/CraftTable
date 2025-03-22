@@ -1,6 +1,7 @@
 #ifndef TRAYVIEW_H
 #define TRAYVIEW_H
 
+#include "TaskEditDialog.h"
 #include "TaskView.h"
 
 #include <QSystemTrayIcon>
@@ -24,6 +25,8 @@ class TrayView: public QWidget
     QLabel *labelDate;
     QLabel *labelWeekday;
 
+    // TaskEditWidget* editor = nullptr;
+
 public:
     TrayView(QWidget *parent = nullptr);
     ~TrayView();
@@ -37,6 +40,8 @@ private:
     void ObjectInit();
     void WidgetInit();
     void CheckTrayIconMouseHover();
+
+    void OnBtnAddClicked();
 
 protected:
     void paintEvent(QPaintEvent*) override;
