@@ -3,6 +3,7 @@
 #include <QApplication>
 #include <QDir>
 #include <QStandardPaths>
+#include <QTextStream>
 
 int main(int argc, char *argv[])
 {

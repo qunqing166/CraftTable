@@ -8,6 +8,7 @@
 #include <QPropertyAnimation>
 #include <QListWidget>
 #include <QLabel>
+#include <QEnterEvent>
 
 class TaskViewItem:public QWidget
 {
@@ -40,6 +41,8 @@ public:
     void SetTaskInfo(const TaskInfo &info);
     TaskInfo GetTaskInfo(){return info;}
     void SetItem(QListWidgetItem *item){this->item = item;}
+
+    void DisConnect();
 
 protected:
     virtual void enterEvent(QEnterEvent *event) override;

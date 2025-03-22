@@ -135,3 +135,10 @@ void TaskViewItem::SetTaskInfo(const TaskInfo &info) {
     this->info = info;
     UpdateInfo();
 }
+
+void TaskViewItem::DisConnect()
+{
+    disconnect(animaBtnWidth, nullptr, this, nullptr);
+    disconnect(btnComplete, nullptr, this, nullptr);
+    disconnect(btnDelete, nullptr   , this, nullptr);
+}

@@ -22,6 +22,11 @@ TaskEditWidget::TaskEditWidget(QWidget *parent)
     });
 }
 
+TaskEditWidget::~TaskEditWidget()
+{
+    qDebug() << "TaskEditWidget delete";
+}
+
 void TaskEditWidget::SetTaskInfo(const TaskInfo& info)
 {
     this->info = info;

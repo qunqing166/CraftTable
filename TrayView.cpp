@@ -28,6 +28,7 @@ TrayView::TrayView(QWidget *parent):QWidget(parent)
 
 TrayView::~TrayView()
 {
+    qDebug() << "TrayView delete";
 }
 
 void TrayView::AddTask(TaskInfo info)
@@ -47,6 +48,7 @@ void TrayView::ObjectInit()
 {
     trayIcon = new QSystemTrayIcon(this);
     hoverCheckTimer = new QTimer(this);
+    ishoverTimeoutTimer = new QTimer(this);
     trayIcon->setIcon(QIcon("C:\\Users\\qunqing\\Desktop\\图片\\新建文件夹 (2)\\hj.png"));
 
     QMenu *trayMenu = new QMenu(this);
@@ -73,6 +75,7 @@ void TrayView::ObjectInit()
 
     hoverCheckTimer->start(20);
     connect(hoverCheckTimer, &QTimer::timeout, this, &TrayView::CheckTrayIconMouseHover);
+    connect(ishoverTimeoutTimer, &QTimer::timeout, ishoverTimeoutTimer, &QTimer::stop);
 }
 
 void TrayView::WidgetInit()
@@ -121,18 +124,16 @@ void TrayView::WidgetInit()
 
 void TrayView::CheckTrayIconMouseHover()
 {
-    static QTimer timer;
-    connect(&timer, &QTimer::timeout, &timer, &QTimer::stop);
     if(trayIcon->geometry().contains(QCursor::pos()))
     {
         this->move(trayIcon->geometry().topLeft() - QPoint(this->width() / 3 * 2, this->height()));
         this->setWindowFlags(this->windowFlags() | Qt::WindowStaysOnTopHint);
         this->show();
-        timer.start(200);
+        ishoverTimeoutTimer->start(200);
     }
     else
     {
-        if(timer.isActive())
+        if(ishoverTimeoutTimer->isActive())
         {
             if(this->geometry().contains(QCursor::pos()))return;
         }
@@ -160,7 +161,6 @@ bool TrayView::eventFilter(QObject *obj, QEvent *event)
 {
     if(event->type() == QEvent::Enter)
     {
-
         if(obj == label1)
         {
             sLayout->setCurrentIndex(1);
@@ -170,6 +170,5 @@ bool TrayView::eventFilter(QObject *obj, QEvent *event)
             sLayout->setCurrentIndex(0);
         }
     }
-
     return QObject::eventFilter(obj, event);
 }

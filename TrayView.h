@@ -15,6 +15,7 @@ class TrayView: public QWidget
 
     QSystemTrayIcon *trayIcon;
     QTimer *hoverCheckTimer;
+    QTimer *ishoverTimeoutTimer;
     QLabel *label1;
     QLabel *label2;
     QStackedLayout *sLayout;

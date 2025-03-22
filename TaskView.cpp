@@ -71,7 +71,6 @@ void TaskView::CheckTaskTimeOut()
         TaskInfo itemInfo = vItem->GetTaskInfo();
         if(itemInfo.GetTime().date() < QDate::currentDate())
         {
-            deletedItem = item;
             this->itemWidget(item)->disconnect();
             this->itemWidget(item)->deleteLater();
             this->removeItemWidget(item);

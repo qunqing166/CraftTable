@@ -18,6 +18,7 @@ public:
     };
 
     explicit TaskEditWidget(QWidget *parent = nullptr);
+    ~TaskEditWidget();
 
     void SetOperationType(OperationType type){this->op = type;}
     void SetEditedItem(TaskViewItem* item){this->editedItem = item;}
