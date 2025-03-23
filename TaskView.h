@@ -28,7 +28,7 @@ public:
     TaskView(QWidget *parent = nullptr);
     ~TaskView();
 
-    void AddTask(TaskInfo info);
+    void AddTask(BaseInfo* info);
 
     void EditTaskInfo(TaskEditDialog::OperationType);
 

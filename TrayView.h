@@ -33,7 +33,7 @@ public:
 
     TaskView* GetTaskView(){return view;}
 
-    void AddTask(TaskInfo info);
+    // void AddTask(const BaseInfo info);
     void UpdateDate();
 
 private:

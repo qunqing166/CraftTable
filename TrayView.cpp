@@ -29,10 +29,10 @@ TrayView::~TrayView()
     qDebug() << "TrayView delete";
 }
 
-void TrayView::AddTask(TaskInfo info)
-{
-    this->view->AddTask(info);
-}
+// void TrayView::AddTask(TaskInfo info)
+// {
+//     this->view->AddTask(info);
+// }
 
 void TrayView::UpdateDate()
 {

@@ -23,15 +23,15 @@ public:
 
     void SetOperationType(OperationType type){this->op = type;}
     void SetEditedItem(TaskViewItem* item){this->editedItem = item;}
-    void SetTaskInfo(const TaskInfo& info);
+    void SetTaskInfo(const BaseInfo* info);
 
-    TaskInfo GetTaskInfo();
+    BaseInfo* GetTaskInfo();
     OperationType GetOperationType(){return op;};
 
 public slots:
 
-    void OnTaskEdit(TaskViewItem* item);
-    void OnTaskCreate();
+    // void OnTaskEdit(TaskViewItem* item);
+    // void OnTaskCreate();
 
 private slots:
 
@@ -39,9 +39,10 @@ private slots:
 
 protected:
     virtual void closeEvent(QCloseEvent *event) override;
+    void paintEvent(QPaintEvent *paintEvent) override;
 
 signals:
-    void TaskCreated(TaskInfo);
+    // void TaskCreated(TaskInfo);
 
 private:
 
@@ -49,19 +50,22 @@ private:
     void WidgetInit();
 
     QLineEdit *lineEditor;
-    TimeEditor *timeEditor;
+    // TimeEditor *timeEditor;
 
     TaskViewItem *editedItem = nullptr;
     OperationType op = create;
-    TaskInfo info;
+    // QScopedPointer<BaseInfo> info;
+    QLabel *labelTime1;
+    QLabel *labelTime2;
 
     QPushButton *btnCancel;
     QPushButton *btnConfirm;
 
     QLabel *labelType;
-    // QPushButton **btnTypes;
     QVector<QPushButton*>btnTypes;
-    TaskInfo::TaskType crtType = TaskInfo::task;
+    // TaskInfo::TaskType crtType = TaskInfo::task;
+
+    // QStackedLayout *sLayout;
 };
 
 #endif // TASKEDITDIALOG_H

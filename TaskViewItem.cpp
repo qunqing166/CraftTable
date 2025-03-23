@@ -5,22 +5,23 @@
 #include <QVBoxLayout>
 #include <QRandomGenerator>
 
-TaskViewItem::TaskViewItem(QWidget *parent):QWidget(parent)
-{
-    ObjectInit();
-    WidgetInit();
+// TaskViewItem::TaskViewItem(QWidget *parent):QWidget(parent)
+// {
+//     ObjectInit();
+//     WidgetInit();
 
-    connect(animaBtnWidth, &QPropertyAnimation::valueChanged, this, [&](){
-        btnComplete->setFixedWidth(btnWidth);
-        btnDelete->setFixedWidth(btnWidth);
-    });
-    connect(btnComplete, &QPushButton::clicked, this, [&](){emit Complete(item);});
-    connect(btnDelete, &QPushButton::clicked, this, [&](){emit Delete(item);});
-}
+//     connect(animaBtnWidth, &QPropertyAnimation::valueChanged, this, [&](){
+//         btnComplete->setFixedWidth(btnWidth);
+//         btnDelete->setFixedWidth(btnWidth);
+//     });
+//     connect(btnComplete, &QPushButton::clicked, this, [&](){emit Complete(item);});
+//     connect(btnDelete, &QPushButton::clicked, this, [&](){emit Delete(item);});
+// }
 
-TaskViewItem::TaskViewItem(const TaskInfo &info, QListWidgetItem *item, QWidget *parent)
+TaskViewItem::TaskViewItem(BaseInfo* info, QListWidgetItem *item, QWidget *parent)
 {
-    this->info = info;
+    // this->info = info;
+    this->info.reset(info);
     this->item = item;
     this->item->setSizeHint(QSize(200, 60));
 
@@ -123,16 +124,14 @@ void TaskViewItem::HideBtn()
 
 void TaskViewItem::UpdateInfo()
 {
-    this->labelContent->setText(this->info.GetContent());
-    QString infoStr = QString("%1 | %2年%3月%4日")
-                          .arg(info.GetType())
-                          .arg(info.GetTime().date().year())
-                          .arg(info.GetTime().date().month())
-                          .arg(info.GetTime().date().day());
+    this->labelContent->setText(this->info->Content());
+    QString infoStr = QString("%1 | %2")
+                          .arg(info->Type())
+                          .arg(info->Time());
     this->labelDate->setText(infoStr);
 }
-void TaskViewItem::SetTaskInfo(const TaskInfo &info) {
-    this->info = info;
+void TaskViewItem::SetTaskInfo(BaseInfo* info) {
+    this->info.reset(info);
     UpdateInfo();
 }
 
@@ -142,3 +141,4 @@ void TaskViewItem::DisConnect()
     disconnect(btnComplete, nullptr, this, nullptr);
     disconnect(btnDelete, nullptr   , this, nullptr);
 }
+const BaseInfo *TaskViewItem::GetTaskInfo() const { return info.data(); }

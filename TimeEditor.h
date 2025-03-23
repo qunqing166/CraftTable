@@ -11,7 +11,6 @@
 #include<QDateTime>
 #include<QPoint>
 #include<QLabel>
-// #include<switchpushbutton.h>
 #include<QPushButton>
 #include<QObject>
 #include<QStackedLayout>

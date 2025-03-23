@@ -94,3 +94,27 @@ QLabel#task_label4{
     background-color: #c7706a;
     border-radius:2px;
 }
+
+QDialog#TaskEditDialog{
+    background-color: white;
+}
+
+QLabel#taskedit_label{
+    background-color: transparent;
+    color: black;
+}
+
+QPushButton#taskedit_btn{
+    background-color: transparent;
+    color: black;
+}
+
+QPushButton:hover#taskedit_btn{
+    background-color: rgb(172, 172, 172);
+    color: black;
+}
+
+QLabel#taskedit_labeltype{
+    background-color: transparent;
+    color: black;
+}

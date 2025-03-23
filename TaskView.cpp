@@ -1,6 +1,9 @@
 #include "FileManagement.h"
 #include "TaskView.h"
 #include "TaskViewItem.h"
+#include "model/CountdownDayInfo.h"
+#include "model/ScheduleInfo.h"
+#include "model/TaskInfo.h"
 #include <QJsonArray>
 #include <QJsonObject>
 #include <QJsonDocument>
@@ -38,10 +41,10 @@ TaskView::~TaskView()
     SaveData();
 }
 
-void TaskView::AddTask(TaskInfo info)
+void TaskView::AddTask(BaseInfo* info)
 {
     QListWidgetItem *item = new QListWidgetItem(this);
-    info.SetContent(info.GetContent());
+    // info.SetContent(info.GetContent());
     TaskViewItem *vItem = new TaskViewItem(info, item, this);
     this->addItem(item);
     this->setItemWidget(item, vItem);
@@ -56,9 +59,12 @@ void TaskView::AddTask(TaskInfo info)
 
 void TaskView::EditTaskInfo(TaskEditDialog::OperationType type)
 {
+    /* 打开编辑窗口 */
     TaskEditDialog editor;
     editor.resize(250, 500);
     editor.SetOperationType(type);
+
+
     if(type == TaskEditDialog::edit)
     {
         editor.SetTaskInfo(editedItem->GetTaskInfo());
@@ -93,8 +99,8 @@ void TaskView::CheckTaskTimeOut()
     {
         QListWidgetItem *item = this->item(i);
         TaskViewItem *vItem = dynamic_cast<TaskViewItem*>(this->itemWidget(item));
-        TaskInfo itemInfo = vItem->GetTaskInfo();
-        if(itemInfo.GetTime().date() < QDate::currentDate())
+        const BaseInfo* itemInfo = vItem->GetTaskInfo();
+        if(itemInfo->IsTimeout())
         {
             this->itemWidget(item)->disconnect();
             this->itemWidget(item)->deleteLater();
@@ -112,13 +118,31 @@ void TaskView::CheckTaskTimeOut()
 
 void TaskView::LoadData()
 {
+    qDebug() << "load";
     QJsonObject obj = FileManagement::Instance()->LoadJsonFile();
 
     int num = obj["num"].toInt();
     QJsonArray arr = obj["data"].toArray();
+
     for(int i = 0; i < arr.count(); ++i)
     {
-        this->AddTask(TaskInfo::FromJson(arr[i].toObject()));
+        QJsonObject&& obj1 = arr[i].toObject();
+        QString&& type = obj1["type"].toString();
+        BaseInfo *info;
+        if(type == TaskInfo::type)
+        {
+            info = new TaskInfo(arr[i].toObject());
+        }
+        else if(type == ScheduleInfo::type)
+        {
+            info = new ScheduleInfo(arr[i].toObject());
+        }
+        else if(type == CountdownDayInfo::type)
+        {
+            info = new CountdownDayInfo(arr[i].toObject());
+        }
+
+        this->AddTask(info);
     }
 }
 
@@ -132,7 +156,7 @@ void TaskView::SaveData()
     {
         QListWidgetItem *item = this->item(i);
         TaskViewItem *itemWidget = dynamic_cast<TaskViewItem*>(this->itemWidget(item));
-        array.append(itemWidget->GetTaskInfo().ToJson());
+        array.append(itemWidget->GetTaskInfo()->ToJson());
     }
 
     obj.insert("data", array);

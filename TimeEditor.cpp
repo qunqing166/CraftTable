@@ -5,6 +5,8 @@ TimeEditor::TimeEditor(QWidget *parent):
 {
     //兼容样式表
     this->setAttribute(Qt::WA_StyledBackground);
+    this->setAttribute(Qt::WA_TranslucentBackground);
+    this->setWindowFlags(Qt::Tool | Qt::FramelessWindowHint);
 
     QVBoxLayout *mainVLayout = new QVBoxLayout(this);
     this->setLayout(mainVLayout);

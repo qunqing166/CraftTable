@@ -1,7 +1,7 @@
 #ifndef TASKVIEWITEM_H
 #define TASKVIEWITEM_H
 
-#include "TaskInfo.h"
+#include "model/BaseInfo.h"
 #include <QObject>
 #include <QWidget>
 #include <QPushButton>
@@ -28,18 +28,21 @@ class TaskViewItem:public QWidget
     QLabel *labelContent;
     QLabel *labelDate;
 
-    TaskInfo info;
+    QScopedPointer<BaseInfo> info;
+
 
 public:
-    TaskViewItem(QWidget *parent = nullptr);
-    TaskViewItem(const TaskInfo& info, QListWidgetItem* item, QWidget* parent = nullptr);
+    // TaskViewItem(QWidget *parent = nullptr);
+    TaskViewItem(BaseInfo* info, QListWidgetItem* item, QWidget* parent = nullptr);
 
     int GetBtnWidth() const { return btnWidth; }
     void SetBtnWidth(int width) { btnWidth = width; }
     int GetBtnHeight() const {return btnHeight;}
     void SetBtnHeight(int height){this->btnHeight = height;}
-    void SetTaskInfo(const TaskInfo &info);
-    TaskInfo GetTaskInfo(){return info;}
+
+    void SetTaskInfo(BaseInfo* info);
+    const BaseInfo *GetTaskInfo() const;
+
     void SetItem(QListWidgetItem *item){this->item = item;}
 
     void DisConnect();
