@@ -1,23 +1,22 @@
 #include "CountdownDayInfo.h"
+#include "../TimeEditor.h"
+#include "ModelType.h"
 
-const QString CountdownDayInfo::type = "countdown_day";
-
-// CountdownDayInfo::CountdownDayInfo() {}
-
-CountdownDayInfo::CountdownDayInfo(const QString &content, const QDateTime &dt):
-    content(content), time(dt)
+CountdownDayInfo::CountdownDayInfo(const QString &content, const QDate &date):
+    content(content), time(date), BaseInfo(Model::countdown_day)
 {
 
 }
 
-CountdownDayInfo::CountdownDayInfo(const QJsonObject &obj)
+CountdownDayInfo::CountdownDayInfo(const QJsonObject &obj):
+    BaseInfo(Model::countdown_day)
 {
     FromJson(obj);
 }
 
 bool CountdownDayInfo::IsTimeout() const
 {
-    return time.date() < QDate::currentDate();
+    return time < QDate::currentDate();
 }
 
 QString CountdownDayInfo::Content() const
@@ -25,19 +24,26 @@ QString CountdownDayInfo::Content() const
     return content;
 }
 
-QString CountdownDayInfo::Type() const
-{
-    // return "countdown_day";
-    return CountdownDayInfo::type;
-}
-
 QString CountdownDayInfo::Time() const
 {
-    return time.toString();
+    int days = QDate::currentDate().daysTo(time);
+    return QString("%1年%2月%3日 %4 | %5")
+        .arg(time.year())
+        .arg(time.month())
+        .arg(time.day())
+        .arg(TimeEditor::GetDayOfWeek(time.dayOfWeek()))
+        .arg(days == 0 ? QString("今日") : QString("剩余%1日").arg(days));
+}
+
+QJsonObject CountdownDayInfo::ToJson() const
+{
+    return QJsonObject{{"content", Content()},
+                       {"type", Model::TypeToStr.value(Model::TypeToChinese.key(Type()))},
+                       {"time", time.toString()}};
 }
 
 void CountdownDayInfo::FromJson(const QJsonObject &obj)
 {
     this->content = obj["content"].toString();
-    this->time = QDateTime::fromString(obj["time"].toString());
+    this->time = QDate::fromString(obj["time"].toString());
 }

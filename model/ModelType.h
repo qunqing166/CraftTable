@@ -17,7 +17,7 @@ const QMap<ModelType, QString> TypeToStr{
     {none, ""},
     {task, "task"},
     {schedule, "schedule"},
-    {countdown_day, "CountdownDay"}
+    {countdown_day, "countdown_day"}
 };
 const QMap<ModelType, QString> TypeToChinese{
     {none, ""},

@@ -43,36 +43,24 @@ TaskEditDialog::~TaskEditDialog()
 void TaskEditDialog::SetTaskInfo(const BaseInfo *info)
 {
     this->lineEditor->setText(info->Content());
-    if(info->Type() == CountdownDayInfo::type)
-    {
-        this->labelType->setText("倒数日");
-    }
-    else if(info->Type() == ScheduleInfo::type)
-    {
-        this->labelType->setText("日程");
-    }
-    else if(info->Type() == TaskInfo::type)
-    {
-        this->labelType->setText("任务");
-    }
+    this->labelType->setText(info->Type());
 }
 
 BaseInfo* TaskEditDialog::GetTaskInfo()
 {
-    if(labelType->text() == "任务")
-    {
-        return new TaskInfo(lineEditor->text(), QDateTime::currentDateTime());
-    }
-    else if(labelType->text() == "日程")
-    {
-        return new ScheduleInfo(lineEditor->text(), QDateTime::currentDateTime(), QDateTime::currentDateTime());
-    }
-    else if(labelType->text() == "倒数日")
-    {
-        return new CountdownDayInfo(lineEditor->text(), QDateTime::currentDateTime());
-    }
+    Model::ModelType key = Model::TypeToChinese.key(labelType->text());
 
-    return nullptr;
+    BaseInfo *info;
+    switch (key) {
+    case Model::countdown_day:
+        return new CountdownDayInfo(lineEditor->text(), QDate::currentDate());
+    case Model::schedule:
+        return new ScheduleInfo(lineEditor->text(), QDateTime::currentDateTime(), QDateTime::currentDateTime());;
+    case Model::task:
+        return new TaskInfo(lineEditor->text(), QDateTime::currentDateTime());;
+    default:
+        return nullptr;
+    }
 }
 
 void TaskEditDialog::OnBtnConfirmClicked()

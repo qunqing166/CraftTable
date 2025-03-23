@@ -7,6 +7,7 @@
 #include <QJsonArray>
 #include <QJsonObject>
 #include <QJsonDocument>
+#include "model/ModelType.h"
 
 TaskView::TaskView(QWidget *parent):QListWidget(parent)
 {
@@ -127,19 +128,25 @@ void TaskView::LoadData()
     for(int i = 0; i < arr.count(); ++i)
     {
         QJsonObject&& obj1 = arr[i].toObject();
-        QString&& type = obj1["type"].toString();
         BaseInfo *info;
-        if(type == TaskInfo::type)
+        Model::ModelType mType = Model::TypeToStr.key(obj1["type"].toString());
+
+        switch(mType)
         {
-            info = new TaskInfo(arr[i].toObject());
-        }
-        else if(type == ScheduleInfo::type)
-        {
-            info = new ScheduleInfo(arr[i].toObject());
-        }
-        else if(type == CountdownDayInfo::type)
-        {
+        case Model::countdown_day:
             info = new CountdownDayInfo(arr[i].toObject());
+            break;
+        case Model::task:
+            info = new TaskInfo(arr[i].toObject());
+            break;
+        case Model::schedule:
+            info = new ScheduleInfo(arr[i].toObject());
+            break;
+        default:
+            /* 不存在类型直接跳过 */
+            info = nullptr;
+            continue;
+            break;
         }
 
         this->AddTask(info);

@@ -1,19 +1,13 @@
 #include "ScheduleInfo.h"
 
-const QString ScheduleInfo::type = "schedule";
-
-// ScheduleInfo::ScheduleInfo()
-// {
-
-// }
-
 ScheduleInfo::ScheduleInfo(const QString &content, const QDateTime &s, const QDateTime &e):
-    content(content), start(s), end(e)
+    content(content), start(s), end(e), BaseInfo(Model::schedule)
 {
 
 }
 
-ScheduleInfo::ScheduleInfo(const QJsonObject &obj)
+ScheduleInfo::ScheduleInfo(const QJsonObject &obj):
+    BaseInfo(Model::schedule)
 {
     FromJson(obj);
 }
@@ -21,12 +15,6 @@ ScheduleInfo::ScheduleInfo(const QJsonObject &obj)
 QString ScheduleInfo::Content() const
 {
     return content;
-}
-
-QString ScheduleInfo::Type() const
-{
-    // return "schedule";
-    return ScheduleInfo::type;
 }
 
 QString ScheduleInfo::Time() const
@@ -45,7 +33,7 @@ QJsonObject ScheduleInfo::ToJson() const
 {
     QJsonObject obj;
     obj.insert("content", this->Content());
-    obj.insert("type", this->Type());
+    obj.insert("type", Model::TypeToStr.value(Model::TypeToChinese.key(Type())));
     obj.insert("time", QJsonObject{{"start", start.toString()}, {"end", end.toString()}});
     return obj;
 }
