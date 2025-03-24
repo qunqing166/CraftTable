@@ -79,11 +79,7 @@ void TaskViewItem::WidgetInit()
     btnComplete->setObjectName("btn_item");
     btnDelete->setObjectName("btn_item");
 
-
-
-
-    // int id = QRandomGenerator::global()->bounded(4) + 1;
-
+    // 获取颜色
     int id = Model::TypeToChinese.key((*info)->Type());
 
     widget->setObjectName("task_item" + QString::number(id));

@@ -96,10 +96,13 @@ class TimeEditor:public QWidget
     Q_OBJECT
 
     QDateTime currentDt = QDateTime::currentDateTime();
-    QLabel *crtInforLabel;// = new QLabel(this);
+    // QLabel *crtInforLabel;// = new QLabel(this);
     int index = 0;          //使用编号
     int type = 0;           //编辑格式
     QStackedLayout *stackedLayout;// = new QStackedLayout(this);
+
+    QLabel* editedLabel = nullptr;
+    QDateTime *dt;
 
 public:
     TimeEditor(QWidget *parent = nullptr);
@@ -108,6 +111,11 @@ public:
     void ShowReset(const QDateTime &dt);
     QDateTime GetDateTime();
     QString GetTimeStr();
+
+    void SetEditedLabel(QLabel* label){this->editedLabel = label;}
+
+    void SetDateTime(const QDateTime& dt){this->currentDt = dt;}
+    void SetEditedDateTime(QDateTime* dt){this->dt = dt;};
 
     static QString GetDayOfWeek(int day);
 
@@ -121,6 +129,8 @@ private:
 signals:
     void Cancel();
     void OK(int index, QDateTime dt);
+
+    // void TimeChanged(const QDateTime&);
 };
 
 #endif // TIMEEDITOR_H

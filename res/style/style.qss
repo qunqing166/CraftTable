@@ -124,3 +124,15 @@ QLabel#TrayView_bottonlabel{
     color: #bebebe;
     /* text-align: center; */
 }
+
+QLabel#tasledit_labeltime{
+    border: 1px solid;
+    border-radius: 5px;
+    background-color: transparent;
+    color: black;
+    min-height: 40px;
+}
+
+QLineEdit#taskedit_lineedit{
+    background-color: rgb(170, 170, 170);
+}

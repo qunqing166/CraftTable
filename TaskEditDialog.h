@@ -28,20 +28,15 @@ public:
     BaseInfo* GetTaskInfo();
     OperationType GetOperationType(){return op;};
 
-public slots:
 
-    // void OnTaskEdit(TaskViewItem* item);
-    // void OnTaskCreate();
-
-private slots:
-
-    void OnBtnConfirmClicked();
 
 protected:
     virtual void closeEvent(QCloseEvent *event) override;
     void paintEvent(QPaintEvent *paintEvent) override;
+    bool eventFilter(QObject *obj, QEvent *event) override;
 
 signals:
+
     // void TaskCreated(TaskInfo);
 
 private:
@@ -49,12 +44,18 @@ private:
     void ObjectInit();
     void WidgetInit();
 
+    void OnBtnConfirmClicked();
+    void ShowTimeEditor();
+
     QLineEdit *lineEditor;
-    // TimeEditor *timeEditor;
+    QLabel *labelEndTime;
+    // QLabel *labelTime;
+    TimeEditor *timeEditor;
 
     TaskViewItem *editedItem = nullptr;
     OperationType op = create;
     // QScopedPointer<BaseInfo> info;
+
     QLabel *labelTime1;
     QLabel *labelTime2;
 
@@ -63,9 +64,9 @@ private:
 
     QLabel *labelType;
     QVector<QPushButton*>btnTypes;
-    // TaskInfo::TaskType crtType = TaskInfo::task;
 
-    // QStackedLayout *sLayout;
+    QDateTime time1;
+    QDateTime time2;
 };
 
 #endif // TASKEDITDIALOG_H

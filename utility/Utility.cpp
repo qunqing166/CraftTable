@@ -27,3 +27,8 @@ QString Utility::GetDayOfWeek(int day) {
     }
     return ret;
 }
+
+QString Utility::FormatDateTime(const QDateTime &dt)
+{
+    return dt.toString("yyyy年MM月dd日 hh:mm ") + Utility::GetDayOfWeek(dt.date().dayOfWeek());
+}

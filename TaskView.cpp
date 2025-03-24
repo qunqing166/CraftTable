@@ -251,7 +251,7 @@ void TaskView::ShowByDate(const QDate &date)
         }
         case Model::schedule:{
             ScheduleInfo* si = dynamic_cast<ScheduleInfo*>(bi);
-            if(si->GetTime().date() == QDate::currentDate().addDays(dDays))
+            if(si->GetSTime().date() == QDate::currentDate().addDays(dDays))
             {
                 this->AddTask(infoList[i]);
             }

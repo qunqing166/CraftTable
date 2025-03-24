@@ -1,4 +1,5 @@
 #include "TimeEditor.h"
+#include "utility/Utility.h"
 
 TimeEditor::TimeEditor(QWidget *parent):
     QWidget(parent)
@@ -11,9 +12,9 @@ TimeEditor::TimeEditor(QWidget *parent):
     QVBoxLayout *mainVLayout = new QVBoxLayout(this);
     this->setLayout(mainVLayout);
 
-    crtInforLabel = new QLabel(this);
-    crtInforLabel->setAlignment(Qt::AlignCenter);
-    crtInforLabel->setObjectName("crtInforLabel");
+    // crtInforLabel = new QLabel(this);
+    // crtInforLabel->setAlignment(Qt::AlignCenter);
+    // crtInforLabel->setObjectName("crtInforLabel");
     stackedLayout = new QStackedLayout(this);
     //初始化三种不同的编辑器样式
     DtEditInit();
@@ -21,11 +22,16 @@ TimeEditor::TimeEditor(QWidget *parent):
     DateEditInit();
 
     // ShowReset(QDateTime::currentDateTime());
-    mainVLayout->addWidget(crtInforLabel, 1);
+    // mainVLayout->addWidget(crtInforLabel, 1);
     mainVLayout->addLayout(stackedLayout, 5);
 
     QHBoxLayout *hLayout1 = new QHBoxLayout(this);
     mainVLayout->addLayout(hLayout1);
+
+    this->setStyleSheet(R"(
+        border:1px solid;
+        border-radius:5px;
+    )");
 
     // QPushButton *pb1 = new QPushButton("取消", this);
     // QPushButton *pb2 = new QPushButton("确定", this);
@@ -62,8 +68,11 @@ void TimeEditor::UpdateCurrenInfor(QDateTime dt, NumSelector::InforType type)
         currentDt.setTime(QTime(currentDt.time().hour(), dt.time().minute()));
     else if(type == NumSelector::InforType::monthDayWeek)
         currentDt.setDate(QDate(dt.date().year(), dt.date().month(), dt.date().day()));
-    QString str = QString::asprintf("%d年%d月%d日 %s %d时%d分", currentDt.date().year(), currentDt.date().month(), currentDt.date().day(), GetDayOfWeek(currentDt.date().dayOfWeek()).toStdString().c_str(), currentDt.time().hour(), currentDt.time().minute());
-    crtInforLabel->setText(str);
+    // QString str = QString::asprintf("%d年%d月%d日 %s %d时%d分", currentDt.date().year(), currentDt.date().month(), currentDt.date().day(), GetDayOfWeek(currentDt.date().dayOfWeek()).toStdString().c_str(), currentDt.time().hour(), currentDt.time().minute());
+    // crtInforLabel->setText(str);
+    // emit TimeChanged(currentDt);
+    *this->dt = currentDt;
+    this->editedLabel->setText(Utility::FormatDateTime(currentDt));
 }
 
 QString TimeEditor::GetDayOfWeek(int day)
@@ -147,7 +156,7 @@ void TimeEditor::DateEditInit()
 void TimeEditor::ShowReset(const QDateTime &dt)
 {
     QString str = QString::asprintf("%d年%d月%d日 %s %d时%d分", dt.date().year(), dt.date().month(), dt.date().day(), GetDayOfWeek(dt.date().dayOfWeek()).toStdString().c_str(), dt.time().hour(), dt.time().minute());
-    crtInforLabel->setText(str);
+    // crtInforLabel->setText(str);
     currentDt = dt;
 
 }
@@ -159,7 +168,8 @@ QDateTime TimeEditor::GetDateTime()
 
 QString TimeEditor::GetTimeStr()
 {
-    return crtInforLabel->text();
+    // return crtInforLabel->text();
+    return QString();
 }
 
 

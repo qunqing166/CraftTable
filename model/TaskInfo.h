@@ -23,7 +23,7 @@ public:
 
     virtual bool IsTimeout() const override;
 
-    QDateTime GetTime(){return time;}
+    QDateTime GetTime() const {return time;}
 
 private:
     QString content;

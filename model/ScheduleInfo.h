@@ -18,7 +18,8 @@ public:
 
     virtual bool IsTimeout() const override;
 
-    QDateTime GetTime(){return start;}
+    QDateTime GetSTime() const {return start;}
+    QDateTime GetETime() const {return end;}
 
 private:
 

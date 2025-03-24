@@ -16,7 +16,7 @@ public:
     virtual void FromJson(const QJsonObject &) override;
     virtual bool IsTimeout() const override;
 
-    QDate GetTime(){return time;}
+    QDate GetTime() const {return time;}
 
 private:
     QString content;
