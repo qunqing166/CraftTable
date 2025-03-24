@@ -19,6 +19,7 @@ class TrayView: public QWidget
     QTimer *ishoverTimeoutTimer;
     QLabel *label1;
     QLabel *label2;
+    QLabel *label3;
     QStackedLayout *sLayout;
     TaskView *view;
     QPushButton *btnAdd;

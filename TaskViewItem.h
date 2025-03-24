@@ -28,12 +28,14 @@ class TaskViewItem:public QWidget
     QLabel *labelContent;
     QLabel *labelDate;
 
-    QScopedPointer<BaseInfo> info;
+    // QSharedPointer<BaseInfo*> info;
+    BaseInfo** info;
 
 
 public:
     // TaskViewItem(QWidget *parent = nullptr);
-    TaskViewItem(BaseInfo* info, QListWidgetItem* item, QWidget* parent = nullptr);
+    TaskViewItem(BaseInfo** info, QListWidgetItem* item, QWidget* parent = nullptr);
+    ~TaskViewItem();
 
     int GetBtnWidth() const { return btnWidth; }
     void SetBtnWidth(int width) { btnWidth = width; }

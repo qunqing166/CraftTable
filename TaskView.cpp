@@ -40,12 +40,15 @@ TaskView::TaskView(QWidget *parent):QListWidget(parent)
 TaskView::~TaskView()
 {
     SaveData();
+    for(int i = this->infoList.count() - 1; i >= 0; --i)
+    {
+        // delete *(infoList[i].data());
+    }
 }
 
-void TaskView::AddTask(BaseInfo* info)
+void TaskView::AddTask(BaseInfo** info)
 {
     QListWidgetItem *item = new QListWidgetItem(this);
-    // info.SetContent(info.GetContent());
     TaskViewItem *vItem = new TaskViewItem(info, item, this);
     this->addItem(item);
     this->setItemWidget(item, vItem);
@@ -70,17 +73,24 @@ void TaskView::EditTaskInfo(TaskEditDialog::OperationType type)
     {
         editor.SetTaskInfo(editedItem->GetTaskInfo());
     }
+
     if(editor.exec() == QDialog::Accepted)
     {
         if(editor.GetOperationType() == TaskEditDialog::create)
         {
-            this->AddTask(editor.GetTaskInfo());
+            BaseInfo** p(new BaseInfo*);
+            *p = editor.GetTaskInfo();
+            infoList.append(p);
+            this->AddTask(p);
+            // this->AddTask(editor.GetTaskInfo());
         }
         else if(editor.GetOperationType() == TaskEditDialog::edit)
         {
             editedItem->SetTaskInfo(editor.GetTaskInfo());
         }
     }
+
+    SaveData();
 }
 
 void TaskView::RemoveItem(QListWidgetItem *item)
@@ -91,6 +101,21 @@ void TaskView::RemoveItem(QListWidgetItem *item)
     this->removeItemWidget(item);
     animaRmvItemHeight->setStartValue(deletedItem->sizeHint().height());
     animaRmvItemHeight->start();
+}
+
+void TaskView::RemoveItemBack(QListWidgetItem *item)
+{
+    this->itemWidget(item)->deleteLater();
+    this->removeItemWidget(item);
+    delete item;
+}
+
+void TaskView::Clear()
+{
+    for(int i = this->count() - 1; i >= 0; --i)
+    {
+        this->RemoveItemBack(this->item(i));
+    }
 }
 
 void TaskView::CheckTaskTimeOut()
@@ -119,11 +144,11 @@ void TaskView::CheckTaskTimeOut()
 
 void TaskView::LoadData()
 {
-    qDebug() << "load";
     QJsonObject obj = FileManagement::Instance()->LoadJsonFile();
 
     int num = obj["num"].toInt();
     QJsonArray arr = obj["data"].toArray();
+
 
     for(int i = 0; i < arr.count(); ++i)
     {
@@ -149,8 +174,13 @@ void TaskView::LoadData()
             break;
         }
 
-        this->AddTask(info);
+        BaseInfo** p(new BaseInfo*);
+        infoList.append(p);
+        *p = info;
+
     }
+
+    this->ShowByDate(QDate::currentDate());
 }
 
 void TaskView::SaveData()
@@ -159,11 +189,9 @@ void TaskView::SaveData()
     obj.insert("num", this->count());
 
     QJsonArray array;
-    for(int i = 0; i < this->count(); i++)
+    for(int i = 0; i < infoList.count(); ++i)
     {
-        QListWidgetItem *item = this->item(i);
-        TaskViewItem *itemWidget = dynamic_cast<TaskViewItem*>(this->itemWidget(item));
-        array.append(itemWidget->GetTaskInfo()->ToJson());
+        array.append((*infoList[i])->ToJson());
     }
 
     obj.insert("data", array);
@@ -171,5 +199,59 @@ void TaskView::SaveData()
     FileManagement::Instance()->SaveJsonFile(obj);
 
     qDebug() << obj;
+}
+
+void TaskView::ShowAll()
+{
+    this->Clear();
+    for(int i = 0; i < infoList.count(); ++i)
+    {
+        this->AddTask(infoList[i]);
+    }
+}
+
+void TaskView::ShowByDate(const QDate &date)
+{
+    this->Clear();
+
+    int dDays = QDate::currentDate().daysTo(date);
+
+    for(int i = 0; i < infoList.count(); ++i)
+    {
+        BaseInfo* bi = *infoList[i];
+
+
+        Model::ModelType t = Model::TypeToChinese.key(bi->Type());
+
+        switch(t)
+        {
+        case Model::task:{
+            TaskInfo* ti = dynamic_cast<TaskInfo*>(bi);
+            if(ti->GetTime().date() == QDate::currentDate().addDays(dDays))
+            {
+                this->AddTask(infoList[i]);
+            }
+            break;
+        }
+        case Model::schedule:{
+            ScheduleInfo* si = dynamic_cast<ScheduleInfo*>(bi);
+            if(si->GetTime().date() == QDate::currentDate().addDays(dDays))
+            {
+                this->AddTask(infoList[i]);
+            }
+            break;
+        }
+        case Model::countdown_day:{
+            CountdownDayInfo* ci = dynamic_cast<CountdownDayInfo*>(bi);
+            if(ci->GetTime() == QDate::currentDate().addDays(dDays))
+            {
+                this->AddTask(infoList[i]);
+            }
+            break;
+        }
+        default:
+            break;
+        }
+    }
 }
 

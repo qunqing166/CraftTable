@@ -109,7 +109,7 @@ void TaskEditDialog::ObjectInit()
 void TaskEditDialog::WidgetInit()
 {
     QVBoxLayout *vLayout = new QVBoxLayout(this);
-    this->setLayout(vLayout);
+    // this->setLayout(vLayout);
     vLayout->setAlignment(Qt::AlignTop);
 
     QHBoxLayout *hLayout = new QHBoxLayout(this);

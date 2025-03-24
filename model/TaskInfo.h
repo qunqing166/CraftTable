@@ -13,6 +13,7 @@ class TaskInfo: public BaseInfo
 public:
     TaskInfo(const QJsonObject&);
     TaskInfo(const QString&, const QDateTime&);
+    ~TaskInfo(){}
 
     virtual QString Content() const override;
     virtual QString Time() const override;
@@ -21,6 +22,8 @@ public:
     virtual void FromJson(const QJsonObject&) override;
 
     virtual bool IsTimeout() const override;
+
+    QDateTime GetTime(){return time;}
 
 private:
     QString content;

@@ -26,7 +26,6 @@ QString ScheduleInfo::Time() const
         .arg(start.time().minute())
         .arg(end.time().hour())
         .arg(end.time().minute());
-    // return start.time().toString() + "to" + end.time().toString();
 }
 
 QJsonObject ScheduleInfo::ToJson() const

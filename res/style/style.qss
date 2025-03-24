@@ -118,3 +118,9 @@ QLabel#taskedit_labeltype{
     background-color: transparent;
     color: black;
 }
+
+QLabel#TrayView_bottonlabel{
+    background-color: transparent;
+    color: #bebebe;
+    /* text-align: center; */
+}

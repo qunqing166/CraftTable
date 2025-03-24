@@ -9,6 +9,7 @@ class ScheduleInfo: public BaseInfo
 public:
     ScheduleInfo(const QString&, const QDateTime&, const QDateTime&);
     ScheduleInfo(const QJsonObject&);
+    ~ScheduleInfo(){}
 
     virtual QString Content() const override;
     virtual QString Time() const override;
@@ -16,6 +17,8 @@ public:
     virtual void FromJson(const QJsonObject &) override;
 
     virtual bool IsTimeout() const override;
+
+    QDateTime GetTime(){return start;}
 
 private:
 

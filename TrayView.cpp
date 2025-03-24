@@ -86,9 +86,9 @@ void TrayView::WidgetInit()
     QVBoxLayout *vLayout = new QVBoxLayout(this);
     vLayout->setAlignment(Qt::AlignTop);
     vLayout->setContentsMargins(4, 10, 4, 4);
-    this->setLayout(vLayout);
+    // this->setLayout(vLayout);
 
-    QHBoxLayout *hLayout = new QHBoxLayout(this);
+    QHBoxLayout *hLayout = new QHBoxLayout();
     hLayout->setAlignment(Qt::AlignLeft);
     vLayout->addLayout(hLayout);
     hLayout->setContentsMargins(10, 5, 5, 2);
@@ -99,7 +99,7 @@ void TrayView::WidgetInit()
     labelEmpty->setFixedWidth(100);
     hLayout->addWidget(labelEmpty);
     hLayout->addWidget(btnAdd);
-    sLayout = new QStackedLayout(this);
+    sLayout = new QStackedLayout();
     vLayout->addLayout(sLayout);
 
     view = new TaskView(this);
@@ -108,16 +108,25 @@ void TrayView::WidgetInit()
     sLayout->addWidget(widget);
     sLayout->setCurrentIndex(0);
 
-    QHBoxLayout *hLayout1 = new QHBoxLayout(this);
+    QHBoxLayout *hLayout1 = new QHBoxLayout();
     vLayout->addLayout(hLayout1);
 
-    label1 = new QLabel("1", this);
-    label2 = new QLabel("2", this);
+    label1 = new QLabel("all", this);
+    label1->setObjectName("TrayView_bottonlabel");
+    label1->setAlignment(Qt::AlignHCenter);
+    label2 = new QLabel("tomorrow", this);
+    label2->setObjectName("TrayView_bottonlabel");
+    label2->setAlignment(Qt::AlignHCenter);
+    label3 = new QLabel("today", this);
+    label3->setObjectName("TrayView_bottonlabel");
+    label3->setAlignment(Qt::AlignHCenter);
     hLayout1->addWidget(label1);
     hLayout1->addWidget(label2);
+    hLayout1->addWidget(label3);
 
     label1->installEventFilter(this);
     label2->installEventFilter(this);
+    label3->installEventFilter(this);
 }
 
 void TrayView::CheckTrayIconMouseHover()
@@ -171,6 +180,13 @@ bool TrayView::eventFilter(QObject *obj, QEvent *event)
         else if(obj == label2)
         {
             sLayout->setCurrentIndex(0);
+            view->ShowByDate(QDate::currentDate().addDays(1));
+
+        }
+        else if(obj == label3)
+        {
+            sLayout->setCurrentIndex(0);
+            view->ShowByDate(QDate::currentDate());
         }
     }
     return QObject::eventFilter(obj, event);

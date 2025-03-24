@@ -8,12 +8,15 @@ class CountdownDayInfo: public BaseInfo
 public:
     CountdownDayInfo(const QString&, const QDate&);
     CountdownDayInfo(const QJsonObject&);
+    ~CountdownDayInfo(){}
 
     virtual QString Content() const override;
     virtual QString Time() const override;
     virtual QJsonObject ToJson() const override;
     virtual void FromJson(const QJsonObject &) override;
     virtual bool IsTimeout() const override;
+
+    QDate GetTime(){return time;}
 
 private:
     QString content;

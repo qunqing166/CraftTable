@@ -24,22 +24,37 @@ class TaskView: public QListWidget
 
     TaskViewItem* editedItem = nullptr;
 
+    QList<BaseInfo**> infoList;
+
 public:
+
+    enum ShowType{
+        today,
+        tomorrow,
+        all
+    };
+
     TaskView(QWidget *parent = nullptr);
     ~TaskView();
 
-    void AddTask(BaseInfo* info);
+    void AddTask(BaseInfo** info);
 
     void EditTaskInfo(TaskEditDialog::OperationType);
+
+    void ShowAll();
+    void ShowByDate(const QDate& date);
 
 private:
     int GetDeletedItemHeight(){return deletedItemHeight;}
     void SetDeletedItemHeight(int height){this->deletedItemHeight = height;}
     void RemoveItem(QListWidgetItem *item);
+    void RemoveItemBack(QListWidgetItem *item);
+    void Clear();
     void CheckTaskTimeOut();
 
     void LoadData();
     void SaveData();
+
 
 signals:
     void Edit(TaskViewItem*);

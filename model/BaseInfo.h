@@ -9,6 +9,7 @@ class BaseInfo
 {
 public:
     BaseInfo(Model::ModelType type);
+    virtual ~BaseInfo(){}
 
     virtual QString Content() const = 0;
     virtual QString Type() const;

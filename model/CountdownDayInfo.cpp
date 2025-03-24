@@ -1,5 +1,5 @@
 #include "CountdownDayInfo.h"
-#include "../TimeEditor.h"
+#include "../utility/Utility.h"
 #include "ModelType.h"
 
 CountdownDayInfo::CountdownDayInfo(const QString &content, const QDate &date):
@@ -31,7 +31,7 @@ QString CountdownDayInfo::Time() const
         .arg(time.year())
         .arg(time.month())
         .arg(time.day())
-        .arg(TimeEditor::GetDayOfWeek(time.dayOfWeek()))
+        .arg(Utility::GetDayOfWeek(time.dayOfWeek()))
         .arg(days == 0 ? QString("今日") : QString("剩余%1日").arg(days));
 }
 

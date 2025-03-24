@@ -5,24 +5,10 @@
 #include <QVBoxLayout>
 #include <QRandomGenerator>
 
-// TaskViewItem::TaskViewItem(QWidget *parent):QWidget(parent)
-// {
-//     ObjectInit();
-//     WidgetInit();
 
-//     connect(animaBtnWidth, &QPropertyAnimation::valueChanged, this, [&](){
-//         btnComplete->setFixedWidth(btnWidth);
-//         btnDelete->setFixedWidth(btnWidth);
-//     });
-//     connect(btnComplete, &QPushButton::clicked, this, [&](){emit Complete(item);});
-//     connect(btnDelete, &QPushButton::clicked, this, [&](){emit Delete(item);});
-// }
-
-TaskViewItem::TaskViewItem(BaseInfo* info, QListWidgetItem *item, QWidget *parent)
+TaskViewItem::TaskViewItem(BaseInfo** info, QListWidgetItem *item, QWidget *parent):
+    info(info), item(item)
 {
-    // this->info = info;
-    this->info.reset(info);
-    this->item = item;
     this->item->setSizeHint(QSize(200, 60));
 
     ObjectInit();
@@ -35,6 +21,11 @@ TaskViewItem::TaskViewItem(BaseInfo* info, QListWidgetItem *item, QWidget *paren
 
     connect(btnComplete, &QPushButton::clicked, this, [&](){emit Complete(this->item);});
     connect(btnDelete, &QPushButton::clicked, this, [&](){emit Delete(this->item);});
+
+}
+
+TaskViewItem::~TaskViewItem()
+{
 }
 
 void TaskViewItem::enterEvent(QEnterEvent *event)
@@ -73,11 +64,11 @@ void TaskViewItem::ObjectInit()
 
 void TaskViewItem::WidgetInit()
 {
-    QHBoxLayout *hLayout1 = new QHBoxLayout(this);
+    QHBoxLayout *hLayout1 = new QHBoxLayout();
     hLayout1->setContentsMargins(0, 0, 0, 0);
     this->setLayout(hLayout1);
     QWidget *widget = new QWidget(this);
-    QVBoxLayout *vLayout1 = new QVBoxLayout(this);
+    QVBoxLayout *vLayout1 = new QVBoxLayout();
     vLayout1->setContentsMargins(0, 0, 0, 0);
     hLayout1->addWidget(widget);
     hLayout1->addLayout(vLayout1);
@@ -95,9 +86,9 @@ void TaskViewItem::WidgetInit()
     label1->setFixedWidth(4);
     label1->setObjectName("task_label" + QString::number(id));
 
-    QHBoxLayout *hLayout = new QHBoxLayout(this);
+    QHBoxLayout *hLayout = new QHBoxLayout();
     widget->setLayout(hLayout);
-    QVBoxLayout *vLayout = new QVBoxLayout(this);
+    QVBoxLayout *vLayout = new QVBoxLayout();
     vLayout->setContentsMargins(0, 0, 0, 0);
 
     hLayout->addWidget(label1);
@@ -124,14 +115,15 @@ void TaskViewItem::HideBtn()
 
 void TaskViewItem::UpdateInfo()
 {
-    this->labelContent->setText(this->info->Content());
+    this->labelContent->setText((*info)->Content());
     QString infoStr = QString("%1 | %2")
-                          .arg(info->Type())
-                          .arg(info->Time());
+                          .arg((*info)->Type())
+                          .arg((*info)->Time());
     this->labelDate->setText(infoStr);
 }
 void TaskViewItem::SetTaskInfo(BaseInfo* info) {
-    this->info.reset(info);
+    delete *this->info;
+    *this->info = info;
     UpdateInfo();
 }
 
@@ -141,4 +133,4 @@ void TaskViewItem::DisConnect()
     disconnect(btnComplete, nullptr, this, nullptr);
     disconnect(btnDelete, nullptr   , this, nullptr);
 }
-const BaseInfo *TaskViewItem::GetTaskInfo() const { return info.data(); }
+const BaseInfo *TaskViewItem::GetTaskInfo() const { return *info; }
