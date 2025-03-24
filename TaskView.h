@@ -47,7 +47,8 @@ public:
 private:
     int GetDeletedItemHeight(){return deletedItemHeight;}
     void SetDeletedItemHeight(int height){this->deletedItemHeight = height;}
-    void RemoveItem(QListWidgetItem *item);
+    void OnItemComplete(QListWidgetItem *item);
+    void OnItemRemove(QListWidgetItem *item);
     void RemoveItemBack(QListWidgetItem *item);
     void Clear();
     void CheckTaskTimeOut();

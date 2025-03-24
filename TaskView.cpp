@@ -42,7 +42,8 @@ TaskView::~TaskView()
     SaveData();
     for(int i = this->infoList.count() - 1; i >= 0; --i)
     {
-        // delete *(infoList[i].data());
+        delete *infoList[i];
+        delete infoList[i];
     }
 }
 
@@ -53,8 +54,8 @@ void TaskView::AddTask(BaseInfo** info)
     this->addItem(item);
     this->setItemWidget(item, vItem);
 
-    connect(vItem, &TaskViewItem::Delete, this, &TaskView::RemoveItem);
-    connect(vItem, &TaskViewItem::Complete, this, &TaskView::RemoveItem);
+    connect(vItem, &TaskViewItem::Delete, this, &TaskView::OnItemRemove);
+    connect(vItem, &TaskViewItem::Complete, this, &TaskView::OnItemComplete);
     connect(vItem, &TaskViewItem::Edit, this, [&](TaskViewItem* item){
         this->editedItem = item;
         EditTaskInfo(TaskEditDialog::edit);
@@ -93,11 +94,26 @@ void TaskView::EditTaskInfo(TaskEditDialog::OperationType type)
     SaveData();
 }
 
-void TaskView::RemoveItem(QListWidgetItem *item)
+void TaskView::OnItemRemove(QListWidgetItem *item)
 {
     deletedItem = item;
-    this->itemWidget(item)->disconnect();
-    this->itemWidget(item)->deleteLater();
+
+    TaskViewItem *vItem = dynamic_cast<TaskViewItem*>(itemWidget(item));
+
+    for(int i = 0; i < infoList.count(); ++i)
+    {
+        if(*infoList[i] == vItem->GetTaskInfo())
+        {
+            delete *infoList[i];
+            delete infoList[i];
+            infoList.remove(i);
+            break;
+        }
+    }
+
+    qDebug() << "list count: " << infoList.count();
+
+    vItem->deleteLater();
     this->removeItemWidget(item);
     animaRmvItemHeight->setStartValue(deletedItem->sizeHint().height());
     animaRmvItemHeight->start();
@@ -253,5 +269,15 @@ void TaskView::ShowByDate(const QDate &date)
             break;
         }
     }
+}
+
+void TaskView::OnItemComplete(QListWidgetItem *item)
+{
+    deletedItem = item;
+    this->itemWidget(item)->disconnect();
+    this->itemWidget(item)->deleteLater();
+    this->removeItemWidget(item);
+    animaRmvItemHeight->setStartValue(deletedItem->sizeHint().height());
+    animaRmvItemHeight->start();
 }
 

@@ -19,8 +19,12 @@ public:
     virtual QJsonObject ToJson() const;
     virtual void FromJson(const QJsonObject&) = 0;
 
+    void SetStatus(bool is){this->isComplete = is;};
+    bool Status(){return isComplete;};
+
 private:
     Model::ModelType type;
+    bool isComplete = false;
 };
 
 #endif // BASEINFO_H

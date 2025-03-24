@@ -26,13 +26,7 @@ TrayView::TrayView(QWidget *parent):QWidget(parent)
 
 TrayView::~TrayView()
 {
-    qDebug() << "TrayView delete";
 }
-
-// void TrayView::AddTask(TaskInfo info)
-// {
-//     this->view->AddTask(info);
-// }
 
 void TrayView::UpdateDate()
 {
@@ -133,7 +127,7 @@ void TrayView::CheckTrayIconMouseHover()
 {
     if(trayIcon->geometry().contains(QCursor::pos()))
     {
-        this->move(trayIcon->geometry().topLeft() - QPoint(this->width() / 3 * 2, this->height()));
+        this->move(trayIcon->geometry().topLeft() - QPoint(this->width() / 4 * 3, this->height()));
         this->setWindowFlags(this->windowFlags() | Qt::WindowStaysOnTopHint);
         this->show();
         ishoverTimeoutTimer->start(200);
@@ -175,7 +169,10 @@ bool TrayView::eventFilter(QObject *obj, QEvent *event)
     {
         if(obj == label1)
         {
-            sLayout->setCurrentIndex(1);
+            // sLayout->setCurrentIndex(1);
+            sLayout->setCurrentIndex(0);
+            // view->ShowByDate(QDate::currentDate().addDays(1));
+            view->ShowAll();
         }
         else if(obj == label2)
         {

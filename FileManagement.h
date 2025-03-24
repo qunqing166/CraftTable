@@ -9,6 +9,7 @@ class FileManagement : public QObject
 
     QString savedFilePath;
     QString fileName;
+    QString competedFileName;
 
 public:
     explicit FileManagement(QObject *parent = nullptr);

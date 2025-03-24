@@ -13,6 +13,8 @@ FileManagement::FileManagement(QObject *parent)
     QCryptographicHash hash(QCryptographicHash::Sha256);
     hash.addData("save");
     fileName = hash.result().toHex();
+    hash.addData("completed");
+    competedFileName = hash.result().toHex();
     qDebug() << "SHA-256 Hash:" << fileName;
 
     this->savedFilePath = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + "/Craft Table";
