@@ -51,5 +51,5 @@ void CountdownDayInfo::FromJson(const QJsonObject &obj)
 {
     this->content = obj["content"].toString();
     this->time = QDate::fromString(obj["time"].toString());
-    this->SetIsCompleted(obj["is_complete"].toBool());
+    if(obj["is_complete"].toBool())this->Completed();
 }

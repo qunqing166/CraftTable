@@ -47,7 +47,7 @@ void ScheduleInfo::FromJson(const QJsonObject &obj)
     QString time = obj["time"].toString();
     start = QDateTime::fromString(obj["time"].toObject()["start"].toString());
     end = QDateTime::fromString(obj["time"].toObject()["end"].toString());
-    this->SetIsCompleted(obj["is_complete"].toBool());
+    if(obj["is_complete"].toBool())this->Completed();
 }
 
 bool ScheduleInfo::IsTimeout() const

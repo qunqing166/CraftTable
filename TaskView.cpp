@@ -194,8 +194,14 @@ void TaskView::LoadData()
         {
             delete info;
         }
+        else if(info->IsTimeout())
+        {
+            info->Completed();
+            delete info;
+        }
         else
         {
+
             BaseInfo** p(new BaseInfo*);
             infoList.append(p);
             *p = info;
@@ -282,7 +288,7 @@ void TaskView::OnItemComplete(QListWidgetItem *item)
 {
     deletedItem = item;
     TaskViewItem *vItem = dynamic_cast<TaskViewItem*>(this->itemWidget(item));
-    vItem->GetTaskInfo()->SetIsCompleted(true);
+    vItem->GetTaskInfo()->Completed();
     vItem->disconnect();
     vItem->deleteLater();
     this->removeItemWidget(item);

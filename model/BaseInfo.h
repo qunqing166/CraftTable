@@ -19,7 +19,7 @@ public:
     virtual QJsonObject ToJson() const;
     virtual void FromJson(const QJsonObject&) = 0;
 
-    void SetIsCompleted(bool is){this->isCompleted = is;};
+    void Completed(){this->isCompleted = true;};
     bool IsCompleted() const {return isCompleted;}
 
 private:
