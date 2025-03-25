@@ -129,6 +129,7 @@ void TrayView::CheckTrayIconMouseHover()
     {
         this->move(trayIcon->geometry().topLeft() - QPoint(this->width() / 4 * 3, this->height()));
         this->setWindowFlags(this->windowFlags() | Qt::WindowStaysOnTopHint);
+        this->view->ShowByDate(QDate::currentDate());
         this->show();
         ishoverTimeoutTimer->start(200);
     }

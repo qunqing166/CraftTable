@@ -190,9 +190,16 @@ void TaskView::LoadData()
             break;
         }
 
-        BaseInfo** p(new BaseInfo*);
-        infoList.append(p);
-        *p = info;
+        if(info->IsCompleted())
+        {
+            delete info;
+        }
+        else
+        {
+            BaseInfo** p(new BaseInfo*);
+            infoList.append(p);
+            *p = info;
+        }
 
     }
 
@@ -274,8 +281,10 @@ void TaskView::ShowByDate(const QDate &date)
 void TaskView::OnItemComplete(QListWidgetItem *item)
 {
     deletedItem = item;
-    this->itemWidget(item)->disconnect();
-    this->itemWidget(item)->deleteLater();
+    TaskViewItem *vItem = dynamic_cast<TaskViewItem*>(this->itemWidget(item));
+    vItem->GetTaskInfo()->SetIsCompleted(true);
+    vItem->disconnect();
+    vItem->deleteLater();
     this->removeItemWidget(item);
     animaRmvItemHeight->setStartValue(deletedItem->sizeHint().height());
     animaRmvItemHeight->start();

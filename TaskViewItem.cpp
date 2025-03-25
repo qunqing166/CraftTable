@@ -135,4 +135,4 @@ void TaskViewItem::DisConnect()
     disconnect(btnComplete, nullptr, this, nullptr);
     disconnect(btnDelete, nullptr   , this, nullptr);
 }
-const BaseInfo *TaskViewItem::GetTaskInfo() const { return *info; }
+

@@ -27,13 +27,15 @@ QJsonObject TaskInfo::ToJson() const
 {
     return QJsonObject{{"content", Content()},
                        {"type", Model::TypeToStr.value(Model::TypeToChinese.key(Type()))},
-                       {"time", time.toString()}};
+                       {"time", time.toString()},
+                       {"is_complete", this->IsCompleted()}};
 }
 
 void TaskInfo::FromJson(const QJsonObject &obj)
 {
     this->content = obj["content"].toString();
     this->time = QDateTime::fromString(obj["time"].toString());
+    this->SetIsCompleted(obj["is_complete"].toBool());
 }
 
 bool TaskInfo::IsTimeout() const

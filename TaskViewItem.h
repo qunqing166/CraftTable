@@ -43,7 +43,7 @@ public:
     void SetBtnHeight(int height){this->btnHeight = height;}
 
     void SetTaskInfo(BaseInfo* info);
-    const BaseInfo *GetTaskInfo() const;
+    BaseInfo *GetTaskInfo() const { return *info; }
 
     void SetItem(QListWidgetItem *item){this->item = item;}
 

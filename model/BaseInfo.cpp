@@ -12,5 +12,5 @@ QString BaseInfo::Type() const
 }
 
 QJsonObject BaseInfo::ToJson() const {
-    return QJsonObject{{"content", Content()}, {"type", Type()}, {"time", Time()}};
+    return QJsonObject{{"content", Content()}, {"type", Type()}, {"time", Time()}, {"is_complete", isCompleted}};
 };

@@ -19,13 +19,16 @@ QString ScheduleInfo::Content() const
 
 QString ScheduleInfo::Time() const
 {
-    return QString("%1月%2日 %3:%4-%5:%6")
-        .arg(start.date().month())
-        .arg(start.date().day())
-        .arg(start.time().hour())
-        .arg(start.time().minute())
-        .arg(end.time().hour())
-        .arg(end.time().minute());
+    // return QString("%1月%2日 %3:%4-%5:%6")
+    //     .arg(start.date().month())
+    //     .arg(start.date().day())
+    //     .arg(start.time().hour())
+    //     .arg(start.time().minute())
+    //     .arg(end.time().hour())
+    //     .arg(end.time().minute());
+    return QString("%1-%2")
+        .arg(start.toString("MM-dd  hh:mm"))
+        .arg(end.toString("hh:mm"));
 }
 
 QJsonObject ScheduleInfo::ToJson() const
@@ -34,6 +37,7 @@ QJsonObject ScheduleInfo::ToJson() const
     obj.insert("content", this->Content());
     obj.insert("type", Model::TypeToStr.value(Model::TypeToChinese.key(Type())));
     obj.insert("time", QJsonObject{{"start", start.toString()}, {"end", end.toString()}});
+    obj.insert("is_complete", this->IsCompleted());
     return obj;
 }
 
@@ -43,6 +47,7 @@ void ScheduleInfo::FromJson(const QJsonObject &obj)
     QString time = obj["time"].toString();
     start = QDateTime::fromString(obj["time"].toObject()["start"].toString());
     end = QDateTime::fromString(obj["time"].toObject()["end"].toString());
+    this->SetIsCompleted(obj["is_complete"].toBool());
 }
 
 bool ScheduleInfo::IsTimeout() const
