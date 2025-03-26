@@ -22,6 +22,7 @@ public:
     virtual void FromJson(const QJsonObject&) override;
 
     virtual bool IsTimeout() const override;
+    bool IsShowByDate(const QDateTime &dt) const override;
 
     QDateTime GetTime() const {return time;}
 

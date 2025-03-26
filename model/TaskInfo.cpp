@@ -42,3 +42,8 @@ bool TaskInfo::IsTimeout() const
 {
     return time.date() < QDate::currentDate();
 }
+
+bool TaskInfo::IsShowByDate(const QDateTime &dt) const
+{
+    return dt.date() == time.date();
+}

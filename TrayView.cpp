@@ -170,9 +170,7 @@ bool TrayView::eventFilter(QObject *obj, QEvent *event)
     {
         if(obj == label1)
         {
-            // sLayout->setCurrentIndex(1);
             sLayout->setCurrentIndex(0);
-            // view->ShowByDate(QDate::currentDate().addDays(1));
             view->ShowAll();
         }
         else if(obj == label2)

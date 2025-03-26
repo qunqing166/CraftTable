@@ -8,6 +8,7 @@
 #include <QJsonObject>
 #include <QJsonDocument>
 #include "model/ModelType.h"
+#include "model/LongTaskInfo.h"
 
 TaskView::TaskView(QWidget *parent):QListWidget(parent)
 {
@@ -83,7 +84,6 @@ void TaskView::EditTaskInfo(TaskEditDialog::OperationType type)
             *p = editor.GetTaskInfo();
             infoList.append(p);
             this->AddTask(p);
-            // this->AddTask(editor.GetTaskInfo());
         }
         else if(editor.GetOperationType() == TaskEditDialog::edit)
         {
@@ -110,8 +110,6 @@ void TaskView::OnItemRemove(QListWidgetItem *item)
             break;
         }
     }
-
-    qDebug() << "list count: " << infoList.count();
 
     vItem->deleteLater();
     this->removeItemWidget(item);
@@ -183,6 +181,9 @@ void TaskView::LoadData()
         case Model::schedule:
             info = new ScheduleInfo(arr[i].toObject());
             break;
+        case Model::long_task:
+            info = new LongTaskInfo(arr[i].toObject());
+            break;
         default:
             /* 不存在类型直接跳过 */
             info = nullptr;
@@ -249,38 +250,42 @@ void TaskView::ShowByDate(const QDate &date)
     {
         BaseInfo* bi = *infoList[i];
 
-
-        Model::ModelType t = Model::TypeToChinese.key(bi->Type());
-
-        switch(t)
+        if(bi->IsShowByDate(QDateTime(date, QTime())))
         {
-        case Model::task:{
-            TaskInfo* ti = dynamic_cast<TaskInfo*>(bi);
-            if(ti->GetTime().date() == QDate::currentDate().addDays(dDays))
-            {
-                this->AddTask(infoList[i]);
-            }
-            break;
+            this->AddTask(infoList[i]);
         }
-        case Model::schedule:{
-            ScheduleInfo* si = dynamic_cast<ScheduleInfo*>(bi);
-            if(si->GetSTime().date() == QDate::currentDate().addDays(dDays))
-            {
-                this->AddTask(infoList[i]);
-            }
-            break;
-        }
-        case Model::countdown_day:{
-            CountdownDayInfo* ci = dynamic_cast<CountdownDayInfo*>(bi);
-            if(ci->GetTime() == QDate::currentDate().addDays(dDays))
-            {
-                this->AddTask(infoList[i]);
-            }
-            break;
-        }
-        default:
-            break;
-        }
+
+        // Model::ModelType t = Model::TypeToChinese.key(bi->Type());
+
+        // switch(t)
+        // {
+        // case Model::task:{
+        //     TaskInfo* ti = dynamic_cast<TaskInfo*>(bi);
+        //     if(ti->GetTime().date() == QDate::currentDate().addDays(dDays))
+        //     {
+        //         this->AddTask(infoList[i]);
+        //     }
+        //     break;
+        // }
+        // case Model::schedule:{
+        //     ScheduleInfo* si = dynamic_cast<ScheduleInfo*>(bi);
+        //     if(si->GetSTime().date() == QDate::currentDate().addDays(dDays))
+        //     {
+        //         this->AddTask(infoList[i]);
+        //     }
+        //     break;
+        // }
+        // case Model::countdown_day:{
+        //     CountdownDayInfo* ci = dynamic_cast<CountdownDayInfo*>(bi);
+        //     if(ci->GetTime() == QDate::currentDate().addDays(dDays))
+        //     {
+        //         this->AddTask(infoList[i]);
+        //     }
+        //     break;
+        // }
+        // default:
+        //     break;
+        // }
     }
 }
 

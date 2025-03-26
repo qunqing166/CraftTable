@@ -112,6 +112,7 @@ QPushButton#taskedit_btn{
 QPushButton:hover#taskedit_btn{
     background-color: rgb(172, 172, 172);
     color: black;
+    text-align: center;
 }
 
 QLabel#taskedit_labeltype{

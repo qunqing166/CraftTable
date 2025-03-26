@@ -19,6 +19,11 @@ bool CountdownDayInfo::IsTimeout() const
     return time < QDate::currentDate();
 }
 
+bool CountdownDayInfo::IsShowByDate(const QDateTime &dt) const
+{
+    return this->time == dt.date();
+}
+
 QString CountdownDayInfo::Content() const
 {
     return content;

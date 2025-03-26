@@ -47,7 +47,10 @@ private:
     void OnBtnConfirmClicked();
     void ShowTimeEditor();
 
+    void ShowEditedItem(Model::ModelType);
+
     QLineEdit *lineEditor;
+    QLabel *labelStartTime;
     QLabel *labelEndTime;
     // QLabel *labelTime;
     TimeEditor *timeEditor;

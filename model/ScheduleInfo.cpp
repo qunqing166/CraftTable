@@ -53,3 +53,8 @@ bool ScheduleInfo::IsTimeout() const
 {
     return end.date() < QDate::currentDate();
 }
+
+bool ScheduleInfo::IsShowByDate(const QDateTime &dt) const
+{
+    return start.date() == dt.date();
+}

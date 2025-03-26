@@ -15,12 +15,14 @@ public:
     virtual QJsonObject ToJson() const override;
     virtual void FromJson(const QJsonObject &) override;
     virtual bool IsTimeout() const override;
+    bool IsShowByDate(const QDateTime &dt) const override;
 
     QDate GetTime() const {return time;}
 
 private:
     // QString content;
     QDate time;
+
 };
 
 #endif // COUNTDOWNDAYINFO_H
