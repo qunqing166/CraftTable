@@ -93,15 +93,9 @@ void TrayView::WidgetInit()
     labelEmpty->setFixedWidth(100);
     hLayout->addWidget(labelEmpty);
     hLayout->addWidget(btnAdd);
-    // sLayout = new QStackedLayout();
-
 
     view = new TaskView(this);
     vLayout->addWidget(view);
-    // sLayout->addWidget(view);
-    // QWidget *widget = new QWidget(this);
-    // sLayout->addWidget(widget);
-    // sLayout->setCurrentIndex(0);
 
     QHBoxLayout *hLayout1 = new QHBoxLayout();
     vLayout->addLayout(hLayout1);

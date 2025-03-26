@@ -214,6 +214,8 @@ void NumSelector::SetCurrentDt(const QDateTime &dt)
 void NumSelector::paintEvent(QPaintEvent *event)
 {
     QPainter painter(this);
+    painter.setBrush(Qt::white);
+    painter.drawRect(this->rect());
     if(isAnimaStart)
     {
         PaintAnimaWork(&painter);
@@ -237,6 +239,7 @@ void NumSelector::wheelEvent(QWheelEvent *event)
     }
     OPenScaleTimer();
     isAnimaStart = true;
+    qDebug() << "wheel";
 }
 
 void NumSelector::OPenScaleTimer()
@@ -262,7 +265,7 @@ void NumSelector::PaintAnimaStop(QPainter *painter)
 
     GetCurrentInfor();
 
-    painter->setBrush(Qt::red);
+    painter->setBrush(Qt::black);
     if(isShowBackgroundRect)
     {
         painter->drawRect(rect1);
@@ -271,7 +274,7 @@ void NumSelector::PaintAnimaStop(QPainter *painter)
     }
 
     crtTextFont = QFont("宋体", 10, QFont::Bold, true);
-
+    painter->setPen(Qt::black);
     crtTextFont.setPixelSize(textFontSizeMax);
     painter->setFont(crtTextFont);
     painter->drawText(rect1, Qt::AlignHCenter, currentInfor);
