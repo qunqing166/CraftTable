@@ -20,7 +20,6 @@ class TrayView: public QWidget
     QLabel *label1;
     QLabel *label2;
     QLabel *label3;
-    QStackedLayout *sLayout;
     TaskView *view;
     QPushButton *btnAdd;
     QLabel *labelDate;

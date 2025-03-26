@@ -93,14 +93,15 @@ void TrayView::WidgetInit()
     labelEmpty->setFixedWidth(100);
     hLayout->addWidget(labelEmpty);
     hLayout->addWidget(btnAdd);
-    sLayout = new QStackedLayout();
-    vLayout->addLayout(sLayout);
+    // sLayout = new QStackedLayout();
+
 
     view = new TaskView(this);
-    sLayout->addWidget(view);
-    QWidget *widget = new QWidget(this);
-    sLayout->addWidget(widget);
-    sLayout->setCurrentIndex(0);
+    vLayout->addWidget(view);
+    // sLayout->addWidget(view);
+    // QWidget *widget = new QWidget(this);
+    // sLayout->addWidget(widget);
+    // sLayout->setCurrentIndex(0);
 
     QHBoxLayout *hLayout1 = new QHBoxLayout();
     vLayout->addLayout(hLayout1);
@@ -170,18 +171,14 @@ bool TrayView::eventFilter(QObject *obj, QEvent *event)
     {
         if(obj == label1)
         {
-            sLayout->setCurrentIndex(0);
             view->ShowAll();
         }
         else if(obj == label2)
         {
-            sLayout->setCurrentIndex(0);
             view->ShowByDate(QDate::currentDate().addDays(1));
-
         }
         else if(obj == label3)
         {
-            sLayout->setCurrentIndex(0);
             view->ShowByDate(QDate::currentDate());
         }
     }

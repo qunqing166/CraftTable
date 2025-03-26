@@ -34,5 +34,5 @@ QString LongTaskInfo::Time() const
 {
     int days = QDate::currentDate().daysTo(start);
     return QString("%1开始 | ").arg(start.toString("yyyy-MM-dd")) +
-           ((days > 0) ? QString("%1日后").arg(days) : QString("开始%1").arg(-days));
+           ((days > 0) ? QString("%1日后").arg(days) : QString("累计%1天").arg(-days));
 }

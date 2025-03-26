@@ -126,6 +126,12 @@ QLabel#TrayView_bottonlabel{
     /* text-align: center; */
 }
 
+QLabel:hover#TrayView_bottonlabel{
+    background-color: transparent;
+    color: #72bdfa;
+    /* text-align: center; */
+}
+
 QLabel#tasledit_labeltime{
     border: 1px solid;
     border-radius: 5px;
