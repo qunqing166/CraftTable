@@ -2,8 +2,8 @@
 #include "../utility/Utility.h"
 #include "ModelType.h"
 
-CountdownDayInfo::CountdownDayInfo(const QString &content, const QDate &date):
-    content(content), time(date), BaseInfo(Model::countdown_day)
+CountdownDayInfo::CountdownDayInfo(const QString &con, const QDate &date):
+    time(date), BaseInfo(Model::countdown_day, con)
 {
 
 }

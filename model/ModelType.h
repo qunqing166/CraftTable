@@ -9,6 +9,7 @@ enum ModelType
 {
     none,
     task,
+    long_task,
     schedule,
     countdown_day
 };

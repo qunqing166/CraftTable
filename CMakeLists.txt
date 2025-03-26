@@ -35,6 +35,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         model/CountdownDayInfo.h model/CountdownDayInfo.cpp
         model/ModelType.h
         utility/Utility.cpp utility/Utility.h
+        model/LongTaskInfo.h model/LongTaskInfo.cpp
 
     )
 # Define target properties for Android with Qt 6 as:

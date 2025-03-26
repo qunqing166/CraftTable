@@ -1,9 +1,8 @@
 #include "ScheduleInfo.h"
 
 ScheduleInfo::ScheduleInfo(const QString &content, const QDateTime &s, const QDateTime &e):
-    content(content), start(s), end(e), BaseInfo(Model::schedule)
+    start(s), end(e), BaseInfo(Model::schedule, content)
 {
-
 }
 
 ScheduleInfo::ScheduleInfo(const QJsonObject &obj):

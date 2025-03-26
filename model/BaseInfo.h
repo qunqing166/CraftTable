@@ -8,10 +8,10 @@
 class BaseInfo
 {
 public:
-    BaseInfo(Model::ModelType type);
+    BaseInfo(Model::ModelType type, const QString& content = QString());
     virtual ~BaseInfo(){}
 
-    virtual QString Content() const = 0;
+    virtual QString Content() const {return content;}
     virtual QString Type() const;
     virtual QString Time() const = 0;
     virtual bool IsTimeout() const = 0;
@@ -22,7 +22,11 @@ public:
     void Completed(){this->isCompleted = true;};
     bool IsCompleted() const {return isCompleted;}
 
+protected:
+    QString content;
+
 private:
+
     Model::ModelType type;
     bool isCompleted = false;
 };

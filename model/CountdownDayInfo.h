@@ -19,7 +19,7 @@ public:
     QDate GetTime() const {return time;}
 
 private:
-    QString content;
+    // QString content;
     QDate time;
 };
 

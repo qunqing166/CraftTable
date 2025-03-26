@@ -23,7 +23,7 @@ public:
 
 private:
 
-    QString content;
+    // QString content;
     QDateTime start = QDateTime::currentDateTime();
     QDateTime end = QDateTime::currentDateTime();
 };

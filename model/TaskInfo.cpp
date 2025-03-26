@@ -7,8 +7,8 @@ TaskInfo::TaskInfo(const QJsonObject &obj):
     FromJson(obj);
 }
 
-TaskInfo::TaskInfo(const QString &info, const QDateTime &dt):
-    content(info), time(dt), BaseInfo(Model::task)
+TaskInfo::TaskInfo(const QString &content, const QDateTime &dt):
+    time(dt), BaseInfo(Model::task, content)
 {
 
 }

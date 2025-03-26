@@ -1,7 +1,7 @@
 #include "BaseInfo.h"
 
-BaseInfo::BaseInfo(Model::ModelType type):
-    type(type)
+BaseInfo::BaseInfo(Model::ModelType type, const QString &content):
+    type(type), content(content)
 {
 
 }

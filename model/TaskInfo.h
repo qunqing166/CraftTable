@@ -26,7 +26,7 @@ public:
     QDateTime GetTime() const {return time;}
 
 private:
-    QString content;
+    // QString content;
     QDateTime time = QDateTime::currentDateTime();
 
 };
