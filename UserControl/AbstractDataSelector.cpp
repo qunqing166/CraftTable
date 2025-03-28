@@ -20,9 +20,9 @@ AbstractDataSelector::AbstractDataSelector(QWidget *parent):
     labelNext->setAlignment(Qt::AlignCenter);
     labelLast->setAlignment(Qt::AlignCenter);
 
-    // labelLast->setStyleSheet("background-color:transparent;");
-    // labelCrt->setStyleSheet("background-color:transparent;");
-    // labelNext->setStyleSheet("background-color:transparent;");
+    labelLast->setStyleSheet("background-color:transparent;");
+    labelCrt->setStyleSheet("background-color:transparent;");
+    labelNext->setStyleSheet("background-color:transparent;");
 
     line1 = new QFrame(this);
     line2 = new QFrame(this);
@@ -34,7 +34,8 @@ AbstractDataSelector::AbstractDataSelector(QWidget *parent):
     SetLineColor(Qt::black);
     SetTextColor(Qt::black);
 
-    this->setFixedSize(200, 200);
+    // this->setFixedSize(200, 200);
+    this->setMinimumSize(60, 150);
 
     connect(animaDy, &QPropertyAnimation::valueChanged, this, [&](){
         this->update();

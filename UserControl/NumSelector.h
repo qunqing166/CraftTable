@@ -10,6 +10,7 @@ public:
     NumSelector(int num, QWidget *parent = nullptr, int min = -100, int max = 100);
 
     void SetRange(int min, int max);
+    void SetSuffix(const QString &s);
 
 protected:
     QString CurrentData() override;
@@ -23,6 +24,7 @@ private:
     int num = 0;
     int min = -100;
     int max = 100;
+    QString suffix = "";
 };
 
 #endif // NUMSELECTOR_H

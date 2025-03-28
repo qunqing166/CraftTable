@@ -20,19 +20,19 @@ void NumSelector::SetRange(int min, int max)
 
 QString NumSelector::CurrentData()
 {
-    return QString::number(num);
+    return QString::number(num) + suffix;
 }
 
 QString NumSelector::NextData()
 {
     if(num + 1 > max)return QString();
-    return QString::number(num + 1);
+    return QString::number(num + 1) + suffix;
 }
 
 QString NumSelector::LastData()
 {
     if(num - 1 < min)return QString();
-    return QString::number(num - 1);
+    return QString::number(num - 1) + suffix;
 }
 
 void NumSelector::ChangeData(bool isNext)
@@ -45,5 +45,9 @@ void NumSelector::ChangeData(bool isNext)
     {
         if(num - 1 >= min)num--;
     }
-    qDebug() << num;
 }
+void NumSelector::SetSuffix(const QString &s)
+{
+    suffix = s;
+    UpdateText();
+};
