@@ -54,8 +54,9 @@ public:
 
     void DisConnect();
 
-    int GetMargin() const;
-    void SetMargin(int newMargin);
+    int GetMargin() const { return margin; }
+
+    void SetMargin(int newMargin) { margin = newMargin; }
 
 protected:
     virtual void enterEvent(QEnterEvent *event) override;

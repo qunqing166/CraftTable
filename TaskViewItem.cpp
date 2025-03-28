@@ -5,17 +5,6 @@
 #include <QVBoxLayout>
 #include <QRandomGenerator>
 
-
-int TaskViewItem::GetMargin() const
-{
-    return margin;
-}
-
-void TaskViewItem::SetMargin(int newMargin)
-{
-    margin = newMargin;
-}
-
 TaskViewItem::TaskViewItem(BaseInfo** info, QListWidgetItem *item, QWidget *parent):
     info(info), item(item)
 {
@@ -92,8 +81,7 @@ void TaskViewItem::ObjectInit()
     animaBtnHeight->setEndValue(0);
 
     animaClicked = new QPropertyAnimation(this, "Margin", this);
-    this->animaClicked->setDuration(150);
-    // animaClicked->set
+    this->animaClicked->setDuration(100);
 
     btnComplete = new QPushButton("完成", this);
     btnDelete = new QPushButton("删除", this);
