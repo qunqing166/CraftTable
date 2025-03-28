@@ -53,7 +53,7 @@ TimeEditor::TimeEditor(QWidget *parent):
     // });
 }
 
-void TimeEditor::UpdateCurrenInfor(QDateTime dt, NumSelector::InforType type)
+void TimeEditor::UpdateCurrenInfo(QDateTime dt, NumSelector::InforType type)
 {
     //更新显示数据
     if(type == NumSelector::InforType::year)
@@ -108,9 +108,9 @@ void TimeEditor::DtEditInit()
     hLayout->addWidget(hour, 1);
     hLayout->addWidget(minute, 1);
 
-    connect(day, &NumSelector::CurrentInforChange, this, &TimeEditor::UpdateCurrenInfor);
-    connect(hour, &NumSelector::CurrentInforChange, this, &TimeEditor::UpdateCurrenInfor);
-    connect(minute, &NumSelector::CurrentInforChange, this, &TimeEditor::UpdateCurrenInfor);
+    connect(day, &NumSelector::CurrentInforChange, this, &TimeEditor::UpdateCurrenInfo);
+    connect(hour, &NumSelector::CurrentInforChange, this, &TimeEditor::UpdateCurrenInfo);
+    connect(minute, &NumSelector::CurrentInforChange, this, &TimeEditor::UpdateCurrenInfo);
 }
 
 void TimeEditor::TimeEditInit()
@@ -127,8 +127,8 @@ void TimeEditor::TimeEditInit()
     hLayout->addWidget(hour);
     hLayout->addWidget(minute);
 
-    connect(hour, &NumSelector::CurrentInforChange, this, &TimeEditor::UpdateCurrenInfor);
-    connect(minute, &NumSelector::CurrentInforChange, this, &TimeEditor::UpdateCurrenInfor);
+    connect(hour, &NumSelector::CurrentInforChange, this, &TimeEditor::UpdateCurrenInfo);
+    connect(minute, &NumSelector::CurrentInforChange, this, &TimeEditor::UpdateCurrenInfo);
 }
 
 void TimeEditor::DateEditInit()
@@ -148,9 +148,9 @@ void TimeEditor::DateEditInit()
     hLayout->addWidget(month);
     hLayout->addWidget(day);
 
-    connect(year, &NumSelector::CurrentInforChange, this, &TimeEditor::UpdateCurrenInfor);
-    connect(month, &NumSelector::CurrentInforChange, this, &TimeEditor::UpdateCurrenInfor);
-    connect(day, &NumSelector::CurrentInforChange, this, &TimeEditor::UpdateCurrenInfor);
+    connect(year, &NumSelector::CurrentInforChange, this, &TimeEditor::UpdateCurrenInfo);
+    connect(month, &NumSelector::CurrentInforChange, this, &TimeEditor::UpdateCurrenInfo);
+    connect(day, &NumSelector::CurrentInforChange, this, &TimeEditor::UpdateCurrenInfo);
 }
 
 void TimeEditor::ShowReset(const QDateTime &dt)
@@ -477,3 +477,5 @@ void TimeEditor::SetType(const int &type1)
     type = type1;
     stackedLayout->setCurrentIndex(type);
 }
+
+void TimeEditor::SetDateTime(const QDateTime &dt) {}

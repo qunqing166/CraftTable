@@ -1,5 +1,5 @@
 #include "TaskView.h"
-#include "TimeEditor.h"
+#include "utility/Utility.h"
 #include "TrayView.h"
 #include <QMenu>
 #include <QAction>
@@ -33,7 +33,7 @@ void TrayView::UpdateDate()
     QDateTime&& dt = QDateTime::currentDateTime();
     QString dtStr = QString("%1/%2").arg(dt.date().month()).arg(dt.date().day());
     labelDate->setText(dtStr);
-    labelWeekday->setText(TimeEditor::GetDayOfWeek(dt.date().dayOfWeek()));
+    labelWeekday->setText(Utility::GetDayOfWeek(dt.date().dayOfWeek()));
 }
 
 void TrayView::ObjectInit()

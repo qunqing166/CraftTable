@@ -105,6 +105,7 @@ void TaskEditDialog::OnBtnConfirmClicked()
 void TaskEditDialog::ShowTimeEditor()
 {
     const int itemHeight = 200;
+    // timeEditor->SetCurrentDt()
     timeEditor->resize(QSize(this->width(), itemHeight));
     timeEditor->move(this->geometry().left(), this->geometry().bottom() - itemHeight - 40);
     timeEditor->show();
@@ -167,6 +168,7 @@ bool TaskEditDialog::eventFilter(QObject *obj, QEvent *event)
         {
             qDebug() << "label1";
             ShowTimeEditor();
+            // timeEditor->ShowReset(time1);
             timeEditor->SetEditedLabel(labelTime1);
             timeEditor->SetEditedDateTime(&time1);
             return true;
@@ -175,6 +177,7 @@ bool TaskEditDialog::eventFilter(QObject *obj, QEvent *event)
         {
             qDebug() << "label2";
             ShowTimeEditor();
+            // timeEditor->ShowReset(time2);
             timeEditor->SetEditedLabel(labelTime2);
             timeEditor->SetEditedDateTime(&time2);
             return true;

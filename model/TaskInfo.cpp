@@ -1,5 +1,5 @@
 #include "TaskInfo.h"
-#include "../TimeEditor.h"
+#include "../utility/Utility.h"
 
 TaskInfo::TaskInfo(const QJsonObject &obj):
     BaseInfo(Model::task)
@@ -20,7 +20,7 @@ QString TaskInfo::Content() const
 
 QString TaskInfo::Time() const
 {
-    return time.toString("yyyy-MM-dd hh:mm ") + TimeEditor::GetDayOfWeek(time.date().dayOfWeek());
+    return time.toString("yyyy-MM-dd hh:mm ") + Utility::GetDayOfWeek(time.date().dayOfWeek());
 }
 
 QJsonObject TaskInfo::ToJson() const

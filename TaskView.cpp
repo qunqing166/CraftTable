@@ -89,9 +89,8 @@ void TaskView::EditTaskInfo(TaskEditDialog::OperationType type)
         {
             editedItem->SetTaskInfo(editor.GetTaskInfo());
         }
+        SaveData();
     }
-
-    SaveData();
 }
 
 void TaskView::OnItemRemove(QListWidgetItem *item)

@@ -41,6 +41,7 @@ TaskView{
 QPushButton#btn_item{
     background-color:#cfcfcf;
     color:black;
+    /* color: transparent; */
 }
 
 QPushButton:hover#btn_item{

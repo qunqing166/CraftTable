@@ -37,6 +37,8 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         model/ModelType.h
         utility/Utility.cpp utility/Utility.h
         model/LongTaskInfo.h model/LongTaskInfo.cpp
+        UserControl/AbstractDataSelector.cpp UserControl/AbstractDataSelector.h
+        UserControl/MonthDaySelector.h UserControl/MonthDaySelector.cpp
 
     )
 # Define target properties for Android with Qt 6 as:

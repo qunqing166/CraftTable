@@ -106,21 +106,28 @@ class TimeEditor:public QWidget
 
 public:
     TimeEditor(QWidget *parent = nullptr);
+
+    void SetDateTime(const QDateTime &dt);
+    void SetEditedDateTime(QDateTime* dt){this->dt = dt;};
+    void SetEditedLabel(QLabel* label){this->editedLabel = label;}
+
+private:
+
+    void SetCurrentDateTime(const QDateTime& dt);
+    QDateTime GetCurrentDateTime() {return currentDt;};
+
     void SetIndex(const int &index1){index = index1;}
     void SetType(const int &type1);
     void ShowReset(const QDateTime &dt);
     QDateTime GetDateTime();
     QString GetTimeStr();
 
-    void SetEditedLabel(QLabel* label){this->editedLabel = label;}
 
-    void SetDateTime(const QDateTime& dt){this->currentDt = dt;}
-    void SetEditedDateTime(QDateTime* dt){this->dt = dt;};
 
     static QString GetDayOfWeek(int day);
 
 private:
-    void UpdateCurrenInfor(QDateTime dt, NumSelector::InforType type);
+    void UpdateCurrenInfo(QDateTime dt, NumSelector::InforType type);
 
     void DtEditInit();
     void TimeEditInit();
