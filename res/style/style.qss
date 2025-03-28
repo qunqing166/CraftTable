@@ -43,6 +43,16 @@ QPushButton#btn_item{
     color:black;
 }
 
+QPushButton:hover#btn_item{
+    background-color:#a8a8a8;
+    color:black;
+}
+
+/* QPushButton:pressed#btn_item{
+    background-color:#818181;
+    color:black;
+} */
+
 QLabel#task_content{
     color: black;
 }

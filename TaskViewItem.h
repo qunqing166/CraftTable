@@ -16,17 +16,22 @@ class TaskViewItem:public QWidget
 
     Q_PROPERTY(int BtnWidth READ GetBtnWidth WRITE SetBtnWidth)
     Q_PROPERTY(int BtnHeight READ GetBtnHeight WRITE SetBtnHeight)
+    Q_PROPERTY(int  Margin READ GetMargin WRITE SetMargin)
 
     int btnWidth = 0;
     int btnHeight = 0;
+    int margin = 0;
 
     QPushButton *btnComplete;
     QPushButton *btnDelete;
     QPropertyAnimation *animaBtnWidth;
     QPropertyAnimation *animaBtnHeight;
+    QPropertyAnimation *animaClicked;
     QListWidgetItem *item;
     QLabel *labelContent;
     QLabel *labelDate;
+
+
 
     // QSharedPointer<BaseInfo*> info;
     BaseInfo** info;
@@ -49,10 +54,14 @@ public:
 
     void DisConnect();
 
+    int GetMargin() const;
+    void SetMargin(int newMargin);
+
 protected:
     virtual void enterEvent(QEnterEvent *event) override;
     virtual void leaveEvent(QEvent *event) override;
     virtual void mousePressEvent(QMouseEvent *event) override;
+    virtual void mouseReleaseEvent(QMouseEvent *event) override;
     // virtual void wheelEvent(QWheelEvent *event) override;
 
 private:

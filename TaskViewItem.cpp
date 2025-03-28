@@ -6,6 +6,16 @@
 #include <QRandomGenerator>
 
 
+int TaskViewItem::GetMargin() const
+{
+    return margin;
+}
+
+void TaskViewItem::SetMargin(int newMargin)
+{
+    margin = newMargin;
+}
+
 TaskViewItem::TaskViewItem(BaseInfo** info, QListWidgetItem *item, QWidget *parent):
     info(info), item(item)
 {
@@ -17,6 +27,15 @@ TaskViewItem::TaskViewItem(BaseInfo** info, QListWidgetItem *item, QWidget *pare
     connect(animaBtnWidth, &QPropertyAnimation::valueChanged, this, [&](){
         btnComplete->setFixedWidth(btnWidth);
         btnDelete->setFixedWidth(btnWidth);
+    });
+    connect(animaClicked, &QPropertyAnimation::valueChanged, this, [&](){
+        this->setContentsMargins(margin, margin, margin, margin);
+    });
+    connect(animaClicked, &QPropertyAnimation::finished, this, [&](){
+        if(margin == 0)
+        {
+            emit Edit(this);
+        }
     });
 
     connect(btnComplete, &QPushButton::clicked, this, [&](){emit Complete(this->item);});
@@ -41,19 +60,45 @@ void TaskViewItem::leaveEvent(QEvent *event)
 void TaskViewItem::mousePressEvent(QMouseEvent *event)
 {
     HideBtn();
-    emit Edit(this);
+
+    qDebug() << "pressed";
+    animaClicked->setStartValue(margin);
+    animaClicked->setEndValue(5);
+    this->animaClicked->start();
+    event->accept();
+}
+
+void TaskViewItem::mouseReleaseEvent(QMouseEvent *event)
+{
+    animaClicked->stop();
+    animaClicked->setStartValue(margin);
+    animaClicked->setEndValue(0);
+    animaClicked->start();
+
+    // emit Edit(this);
+
     event->accept();
 }
 
 void TaskViewItem::ObjectInit()
 {
+
+
     animaBtnWidth = new QPropertyAnimation(this, "BtnWidth", this);
+    animaBtnWidth->setDuration(150);
+
     animaBtnHeight = new QPropertyAnimation(this, "BtnHeight", this);
     animaBtnHeight->setStartValue(60);
     animaBtnHeight->setEndValue(0);
 
+    animaClicked = new QPropertyAnimation(this, "Margin", this);
+    this->animaClicked->setDuration(150);
+    // animaClicked->set
+
     btnComplete = new QPushButton("完成", this);
     btnDelete = new QPushButton("删除", this);
+    btnComplete->setObjectName("btn_item");
+    btnDelete->setObjectName("btn_item");
 
     labelContent = new QLabel(this);
     labelContent->setObjectName("task_content");
@@ -76,8 +121,6 @@ void TaskViewItem::WidgetInit()
     vLayout1->addWidget(btnDelete);
     btnComplete->setFixedWidth(0);
     btnDelete->setFixedWidth(0);
-    btnComplete->setObjectName("btn_item");
-    btnDelete->setObjectName("btn_item");
 
     // 获取颜色
     int id = Model::TypeToChinese.key((*info)->Type());
