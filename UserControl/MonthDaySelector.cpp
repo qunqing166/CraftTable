@@ -1,9 +1,10 @@
 #include "MonthDaySelector.h"
 
 MonthDaySelector::MonthDaySelector(QWidget *parent):
-    AbstractDataSelector(parent)
+    date(QDate::currentDate()), AbstractDataSelector(parent)
 {
-
+    /* 显式调用以刷新数据(必要的) */
+    this->UpdateText();
 }
 
 QString MonthDaySelector::CurrentData()

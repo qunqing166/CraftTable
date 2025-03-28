@@ -19,7 +19,7 @@ protected:
 
 private:
 
-    QDate date = QDate::currentDate();
+    QDate date;// = QDate::currentDate();
 
 };
 

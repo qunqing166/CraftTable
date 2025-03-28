@@ -25,9 +25,13 @@ protected:
     virtual QString NextData(){return QString();};
     virtual QString LastData(){return QString();};
     virtual void ChangeData(bool isNext){};
+    virtual bool IsNextable(){return true;}
+    virtual bool IsLastable(){return true;}
 
     void paintEvent(QPaintEvent * event) override;
     void wheelEvent(QWheelEvent *event) override;
+
+    void UpdateText();
 
 private:
 

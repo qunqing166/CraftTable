@@ -174,37 +174,7 @@ QString TimeEditor::GetTimeStr()
 
 
 
-NumSelector::NumSelector(QWidget *parent):
-    QWidget(parent)
-{
-    scaleTimer = new QTimer(this);
-    currentType = InforType::day;
 
-
-    connect(scaleTimer, &QTimer::timeout, this, [&](){
-        crtMovePos += moveStep;
-
-        int crtMovePosAbs = abs(crtMovePos);
-
-        if(crtMovePosAbs > interval)
-        {
-            scaleTimer->stop();
-            crtMovePos = 0;
-            isAnimaStart = false;
-
-            if(moveStep > 0)
-            {
-                InforChange(false);
-            }
-            else
-            {
-                InforChange(true);
-            }
-        }
-
-        this->repaint();
-    });
-}
 
 void NumSelector::SetCurrentDt(const QDateTime &dt)
 {

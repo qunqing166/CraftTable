@@ -6,6 +6,12 @@ AbstractDataSelector::AbstractDataSelector(QWidget *parent):
     QWidget(parent)
 {
 
+    /**
+     * 在这里有个问题, 由于基类先于其他数据初始化
+     * 当基类的构造函数加载数据到label时, 无法获取正确数据
+     * 这时候需要在派生类的初始化函数中调用'UpdateText()'来刷新数据
+     */
+
     labelCrt = new QLabel(CurrentData(), this);
     labelNext = new QLabel(NextData(), this);
     labelLast = new QLabel(LastData(), this);
@@ -32,9 +38,6 @@ AbstractDataSelector::AbstractDataSelector(QWidget *parent):
 
     connect(animaDy, &QPropertyAnimation::valueChanged, this, [&](){
         this->update();
-    });
-    connect(animaDy, &QPropertyAnimation::finished, this, [&](){
-
     });
 
     this->repaint();
@@ -67,24 +70,32 @@ void AbstractDataSelector::SetLineColor(const QColor &color)
 
 void AbstractDataSelector::wheelEvent(QWheelEvent *event)
 {
+
     if(event->angleDelta().y() > 0)
     {
+        if(!IsLastable())return;
         isNext = false;
         animaDy->setStartValue(0);
         animaDy->setEndValue(this->height() / 3);
     }
     else
     {
+        if(!IsNextable())return;
         animaDy->setStartValue(0);
         animaDy->setEndValue(-this->height() / 3);
         isNext = true;
     }
 
     isDyHalf = false;
+    UpdateText();
+    animaDy->start();
+}
+
+void AbstractDataSelector::UpdateText()
+{
     labelLast->setText(LastData());
     labelCrt->setText(CurrentData());
     labelNext->setText(NextData());
-    animaDy->start();
 }
 
 // void AbstractDataSelector::ChangeData(bool isNext) {
