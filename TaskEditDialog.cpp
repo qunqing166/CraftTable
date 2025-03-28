@@ -208,8 +208,8 @@ void TaskEditDialog::ObjectInit()
         btnTypes[i]->setObjectName("taskedit_btn");
         btnTypes[i]->setFixedWidth(45);
     }
-    labelTime1 = new QLabel(QDateTime::currentDateTime().toString(), this);
-    labelTime2 = new QLabel(QDateTime::currentDateTime().toString(), this);
+    labelTime1 = new QLabel(Utility::FormatDateTime(QDateTime::currentDateTime()), this);
+    labelTime2 = new QLabel(Utility::FormatDateTime(QDateTime::currentDateTime()), this);
 
     labelTime1->installEventFilter(this);
     labelTime2->installEventFilter(this);
