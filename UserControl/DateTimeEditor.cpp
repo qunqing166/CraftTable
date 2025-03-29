@@ -7,6 +7,12 @@
 DateTimeEditor::DateTimeEditor(QWidget *parent):
     QWidget(parent)
 {
+    this->setWindowFlags(Qt::Tool | Qt::FramelessWindowHint);
+    // this->setAttribute(Qt::WA_StyledBackground);
+    // this->setAttribute(Qt::WA_TranslucentBackground);
+    // this->setWindowFlags(Qt::Tool | Qt::FramelessWindowHint);
+    this->resize(200, 200);
+
     QHBoxLayout *hLayout = new QHBoxLayout(this);
     this->setLayout(hLayout);
 
@@ -18,4 +24,6 @@ DateTimeEditor::DateTimeEditor(QWidget *parent):
     hLayout->addWidget(mdsele);
     hLayout->addWidget(numSele1);
     hLayout->addWidget(numSele2);
+
+    this->setStyleSheet("background-color:white;");
 }

@@ -59,12 +59,17 @@ void TaskView::AddTask(BaseInfo** info)
     connect(vItem, &TaskViewItem::Complete, this, &TaskView::OnItemComplete);
     connect(vItem, &TaskViewItem::Edit, this, [&](TaskViewItem* item){
         this->editedItem = item;
-        EditTaskInfo(TaskEditDialog::edit);
+        QMetaObject::invokeMethod(this, [&](){
+            EditTaskInfo(TaskEditDialog::edit);
+        }, Qt::QueuedConnection);
+
+        // emit Edit(editedItem);
     });
 }
 
 void TaskView::EditTaskInfo(TaskEditDialog::OperationType type)
 {
+
     /* 打开编辑窗口 */
     TaskEditDialog editor;
     editor.resize(250, 500);

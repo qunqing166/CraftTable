@@ -2,8 +2,8 @@
 #define TASKEDITDIALOG_H
 
 #include "TaskViewItem.h"
-#include "TimeEditor.h"
-
+// #include "TimeEditor.h"
+#include "UserControl/DateTimeEditor.h"
 #include <QLineEdit>
 #include <QWidget>
 #include <QDialog>
@@ -53,7 +53,8 @@ private:
     QLabel *labelStartTime;
     QLabel *labelEndTime;
     // QLabel *labelTime;
-    TimeEditor *timeEditor;
+    // TimeEditor *timeEditor;
+    DateTimeEditor *timeEditor;
 
     TaskViewItem *editedItem = nullptr;
     OperationType op = create;

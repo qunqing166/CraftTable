@@ -2,12 +2,12 @@
 #include "model/CountdownDayInfo.h"
 #include "model/ScheduleInfo.h"
 #include "model/TaskInfo.h"
-#include "TimeEditor.h"
 #include <QLabel>
 #include <QLineEdit>
 #include <QPushButton>
 #include <QVBoxLayout>
 #include <QSpacerItem>
+#include <QPainter>
 #include "utility/Utility.h"
 #include "model/LongTaskInfo.h"
 
@@ -40,6 +40,7 @@ TaskEditDialog::TaskEditDialog(QWidget *parent)
         ShowEditedItem(Model::countdown_day);
     });
 
+    // this->layout()->setEnabled(false);
 }
 
 TaskEditDialog::~TaskEditDialog()
@@ -109,6 +110,7 @@ void TaskEditDialog::ShowTimeEditor()
     timeEditor->resize(QSize(this->width(), itemHeight));
     timeEditor->move(this->geometry().left(), this->geometry().bottom() - itemHeight - 40);
     timeEditor->show();
+    // qDebug() << timeEditor->geometry();
 }
 
 void TaskEditDialog::ShowEditedItem(Model::ModelType type)
@@ -157,7 +159,7 @@ void TaskEditDialog::paintEvent(QPaintEvent *paintEvent)
     painter.setPen(Qt::NoPen);
     painter.drawRoundedRect(rect(), 15, 15);
 
-    QWidget::paintEvent(paintEvent);
+    QDialog::paintEvent(paintEvent);
 }
 
 bool TaskEditDialog::eventFilter(QObject *obj, QEvent *event)
@@ -190,11 +192,13 @@ bool TaskEditDialog::eventFilter(QObject *obj, QEvent *event)
         }
     }
 
-    return QObject::eventFilter(obj, event);
+    return QDialog::eventFilter(obj, event);
 }
 
 void TaskEditDialog::ObjectInit()
 {
+    lineEditor = new QLineEdit(this);
+
     btnCancel = new QPushButton("取消", this);
     btnConfirm = new QPushButton("确认", this);
     labelType = new QLabel("任务", this);
@@ -217,8 +221,9 @@ void TaskEditDialog::ObjectInit()
     labelTime1->installEventFilter(this);
     labelTime2->installEventFilter(this);
 
-    timeEditor = new TimeEditor(this);
+    timeEditor = new DateTimeEditor(this);
     timeEditor->hide();
+
 }
 
 void TaskEditDialog::WidgetInit()
@@ -246,7 +251,7 @@ void TaskEditDialog::WidgetInit()
     QLabel *label1 = new QLabel("content", this);
     label1->setObjectName("taskedit_label");
     vLayout->addWidget(label1);
-    lineEditor = new QLineEdit(this);
+
     lineEditor->setObjectName("taskedit_lineedit");
     vLayout->addWidget(lineEditor);
 
@@ -273,4 +278,5 @@ void TaskEditDialog::WidgetInit()
 
     hLayout2->addWidget(btnCancel);
     hLayout2->addWidget(btnConfirm);
+
 }

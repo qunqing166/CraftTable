@@ -20,9 +20,9 @@ AbstractDataSelector::AbstractDataSelector(QWidget *parent):
     labelNext->setAlignment(Qt::AlignCenter);
     labelLast->setAlignment(Qt::AlignCenter);
 
-    labelLast->setStyleSheet("background-color:transparent;");
-    labelCrt->setStyleSheet("background-color:transparent;");
-    labelNext->setStyleSheet("background-color:transparent;");
+    // labelLast->setStyleSheet("background-color:transparent;");
+    // labelCrt->setStyleSheet("background-color:transparent;");
+    // labelNext->setStyleSheet("background-color:transparent;");
 
     line1 = new QFrame(this);
     line2 = new QFrame(this);
@@ -35,13 +35,17 @@ AbstractDataSelector::AbstractDataSelector(QWidget *parent):
     SetTextColor(Qt::black);
 
     // this->setFixedSize(200, 200);
-    this->setMinimumSize(60, 150);
+    // this->setMinimumSize(60, 150);
 
+    // connect(animaDy, &QPropertyAnimation::stateChanged, this, [&](){
+    //     qDebug() << "state";
+    // });
+    connect(animaDy, &QPropertyAnimation::finished, this, [&](){
+        qDebug() << "anima finished";
+    });
     connect(animaDy, &QPropertyAnimation::valueChanged, this, [&](){
         this->update();
     });
-
-    this->repaint();
 }
 
 void AbstractDataSelector::SetBackgroundColor(const QColor &color)
@@ -71,18 +75,20 @@ void AbstractDataSelector::SetLineColor(const QColor &color)
 
 void AbstractDataSelector::wheelEvent(QWheelEvent *event)
 {
-
+    // qDebug() << animaDy->state();
     if(event->angleDelta().y() > 0)
     {
         if(!IsLastable())return;
         isNext = false;
         animaDy->setStartValue(0);
+        qDebug() << this->height();
         animaDy->setEndValue(this->height() / 3);
     }
     else
     {
         if(!IsNextable())return;
         animaDy->setStartValue(0);
+        qDebug() << this->height();
         animaDy->setEndValue(-this->height() / 3);
         isNext = true;
     }
@@ -99,13 +105,9 @@ void AbstractDataSelector::UpdateText()
     labelNext->setText(NextData());
 }
 
-// void AbstractDataSelector::ChangeData(bool isNext) {
-//     if (isNext)crtInt++;
-//     else crtInt--;
-// }
-
 void AbstractDataSelector::paintEvent(QPaintEvent *event)
 {
+    qDebug() << "painter";
     if(isDyHalf == false && abs(dy) > (this->height() / 6))
     {
         isDyHalf = true;
@@ -151,4 +153,14 @@ void AbstractDataSelector::paintEvent(QPaintEvent *event)
 
     line1->move(0, this->height() / 3 + this->height() / 12);
     line2->move(0, this->height() / 3 * 2 - this->height() / 12);
+}
+void AbstractDataSelector::SetDy(int d)
+{
+    dy = d;
+    // qDebug() << dy;
+}
+
+int AbstractDataSelector::Dy() const
+{
+    return dy;
 }

@@ -24,6 +24,7 @@ class TrayView: public QWidget
     QPushButton *btnAdd;
     QLabel *labelDate;
     QLabel *labelWeekday;
+    // TaskViewItem *editedItem = nullptr;
 
     // TaskEditWidget* editor = nullptr;
 
@@ -40,6 +41,8 @@ private:
     void ObjectInit();
     void WidgetInit();
     void CheckTrayIconMouseHover();
+
+    // void EditTaskInfo(TaskEditDialog::OperationType type);
 
     void OnBtnAddClicked();
 

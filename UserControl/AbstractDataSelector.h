@@ -35,12 +35,12 @@ protected:
 
 private:
 
-
+    void Paint();
 
     Q_PROPERTY(int Dy READ Dy WRITE SetDy)
 
-    void SetDy(int d){dy = d;}
-    int Dy() const {return dy;}
+    void SetDy(int d);
+    int Dy() const;
 
     int dy = 0;
     bool isNext;
