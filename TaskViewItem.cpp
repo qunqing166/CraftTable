@@ -50,7 +50,6 @@ void TaskViewItem::mousePressEvent(QMouseEvent *event)
 {
     HideBtn();
 
-    qDebug() << "pressed";
     animaClicked->setStartValue(margin);
     animaClicked->setEndValue(5);
     this->animaClicked->start();

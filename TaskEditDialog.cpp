@@ -39,8 +39,18 @@ TaskEditDialog::TaskEditDialog(QWidget *parent)
     connect(btnTypes[3], &QPushButton::clicked, this, [&](){
         ShowEditedItem(Model::countdown_day);
     });
-
-    // this->layout()->setEnabled(false);
+    connect(timeEditor, &DateTimeEditor::ValueChanged, this, [&](const QDateTime& dt){
+        if(labelEdited != nullptr && timeEdited != nullptr)
+        {
+            *timeEdited = dt;
+            labelEdited->setText(Utility::FormatDateTime(dt));
+            if(timeEdited == &time1 && time1 > time2)
+            {
+                time2 = time1;
+                UpdateTimeLabel();
+            }
+        }
+    });
 }
 
 TaskEditDialog::~TaskEditDialog()
@@ -56,33 +66,33 @@ void TaskEditDialog::SetTaskInfo(const BaseInfo *info)
     case Model::countdown_day:{
         const CountdownDayInfo *ci = static_cast<const CountdownDayInfo*>(info);
         time1 = QDateTime(ci->GetTime(), QTime());
-        this->labelTime1->setText(Utility::FormatDateTime(time1));
+        /* 默认为起始时间的半小时后, 为了应对转为日程类型 */
+        time2 = time1.addSecs(60 * 30);
         break;
     }
     case Model::task:{
         const TaskInfo *ti = static_cast<const TaskInfo*>(info);
         time1 = ti->GetTime();
-        this->labelTime1->setText(Utility::FormatDateTime(time1));
+        time2 = time1.addSecs(60 * 30);
         break;
     }
     case Model::schedule:{
         const ScheduleInfo *si = static_cast<const ScheduleInfo*>(info);
         time1 = si->GetSTime();
-        this->labelTime1->setText(Utility::FormatDateTime(time1));
         time2 = si->GetETime();
-        this->labelTime1->setText(Utility::FormatDateTime(time2));
         break;
     }
     default:
         break;
     }
+
+    UpdateTimeLabel();
 }
 
 BaseInfo* TaskEditDialog::GetTaskInfo()
 {
     Model::ModelType key = Model::TypeToChinese.key(labelType->text());
 
-    // BaseInfo *info;
     switch (key) {
     case Model::countdown_day:
         return new CountdownDayInfo(lineEditor->text(), this->time1.date());
@@ -111,6 +121,12 @@ void TaskEditDialog::ShowTimeEditor()
     timeEditor->move(this->geometry().left(), this->geometry().bottom() - itemHeight - 40);
     timeEditor->show();
     // qDebug() << timeEditor->geometry();
+}
+
+void TaskEditDialog::UpdateTimeLabel()
+{
+    labelTime1->setText(Utility::FormatDateTime(time1));
+    labelTime2->setText(Utility::FormatDateTime(time2));
 }
 
 void TaskEditDialog::ShowEditedItem(Model::ModelType type)
@@ -168,27 +184,25 @@ bool TaskEditDialog::eventFilter(QObject *obj, QEvent *event)
     {
         if(obj == labelTime1)
         {
-            qDebug() << "label1";
             ShowTimeEditor();
-            // timeEditor->ShowReset(time1);
-            timeEditor->SetEditedLabel(labelTime1);
-            timeEditor->SetEditedDateTime(&time1);
+            labelEdited = labelTime1;
+            timeEdited = &time1;
+            timeEditor->SetDateTime(time1);
             return true;
         }
         else if(obj == labelTime2)
         {
-            qDebug() << "label2";
             ShowTimeEditor();
-            // timeEditor->ShowReset(time2);
-            timeEditor->SetEditedLabel(labelTime2);
-            timeEditor->SetEditedDateTime(&time2);
+            labelEdited = labelTime2;
+            timeEdited = &time2;
+            timeEditor->SetDateTime(time2);
             return true;
         }
         else
         {
-            qDebug() << "other";
             timeEditor->hide();
-            timeEditor->SetEditedLabel(nullptr);
+            labelEdited = nullptr;
+            timeEdited = nullptr;
         }
     }
 

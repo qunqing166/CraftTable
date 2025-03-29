@@ -1,8 +1,12 @@
 #ifndef DATETIMEEDITOR_H
 #define DATETIMEEDITOR_H
 
+#include "MonthDaySelector.h"
+#include "NumSelector.h"
+
 #include <QWidget>
 #include <QLabel>
+#include <QDateTime>
 
 class DateTimeEditor : public QWidget
 {
@@ -11,13 +15,19 @@ class DateTimeEditor : public QWidget
 public:
     DateTimeEditor(QWidget *parent = nullptr);
 
-    void SetEditedLabel(QLabel* label){editedLabel = label;}
-    void SetEditedDateTime(QDateTime* dt){editedDt = dt;}
+    void SetDateTime(const QDateTime& dt);
 
 private:
 
-    QLabel* editedLabel = nullptr;
-    QDateTime *editedDt = nullptr;
+    QDate date = QDate::currentDate();
+    QTime time = QTime::currentTime();
+
+    MonthDaySelector *mdsele;
+    NumSelector* numSele1;
+    NumSelector* numSele2;
+
+signals:
+    void ValueChanged(const QDateTime& dt);
 
 };
 

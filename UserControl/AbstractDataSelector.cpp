@@ -40,9 +40,9 @@ AbstractDataSelector::AbstractDataSelector(QWidget *parent):
     // connect(animaDy, &QPropertyAnimation::stateChanged, this, [&](){
     //     qDebug() << "state";
     // });
-    connect(animaDy, &QPropertyAnimation::finished, this, [&](){
-        qDebug() << "anima finished";
-    });
+    // connect(animaDy, &QPropertyAnimation::finished, this, [&](){
+    //     // qDebug() << "anima finished";
+    // });
     connect(animaDy, &QPropertyAnimation::valueChanged, this, [&](){
         this->update();
     });
@@ -75,7 +75,6 @@ void AbstractDataSelector::SetLineColor(const QColor &color)
 
 void AbstractDataSelector::wheelEvent(QWheelEvent *event)
 {
-    // qDebug() << animaDy->state();
     if(event->angleDelta().y() > 0)
     {
         if(!IsLastable())return;
@@ -107,7 +106,6 @@ void AbstractDataSelector::UpdateText()
 
 void AbstractDataSelector::paintEvent(QPaintEvent *event)
 {
-    qDebug() << "painter";
     if(isDyHalf == false && abs(dy) > (this->height() / 6))
     {
         isDyHalf = true;
@@ -157,7 +155,6 @@ void AbstractDataSelector::paintEvent(QPaintEvent *event)
 void AbstractDataSelector::SetDy(int d)
 {
     dy = d;
-    // qDebug() << dy;
 }
 
 int AbstractDataSelector::Dy() const

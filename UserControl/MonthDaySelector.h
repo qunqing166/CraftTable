@@ -7,8 +7,12 @@
 
 class MonthDaySelector : public AbstractDataSelector
 {
+    Q_OBJECT
+
 public:
     MonthDaySelector(QWidget *parent = nullptr);
+
+    void SetValue(const QDate& time);
 
     // AbstractDataSelector interface
 protected:
@@ -19,7 +23,10 @@ protected:
 
 private:
 
-    QDate date;// = QDate::currentDate();
+    QDate date = QDate::currentDate();
+
+signals:
+    void ValueChanged(const QDate&);
 
 };
 

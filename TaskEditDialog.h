@@ -35,10 +35,6 @@ protected:
     void paintEvent(QPaintEvent *paintEvent) override;
     bool eventFilter(QObject *obj, QEvent *event) override;
 
-signals:
-
-    // void TaskCreated(TaskInfo);
-
 private:
 
     void ObjectInit();
@@ -47,21 +43,22 @@ private:
     void OnBtnConfirmClicked();
     void ShowTimeEditor();
 
+    void UpdateTimeLabel();
+
     void ShowEditedItem(Model::ModelType);
 
     QLineEdit *lineEditor;
     QLabel *labelStartTime;
     QLabel *labelEndTime;
-    // QLabel *labelTime;
-    // TimeEditor *timeEditor;
+
     DateTimeEditor *timeEditor;
 
     TaskViewItem *editedItem = nullptr;
     OperationType op = create;
-    // QScopedPointer<BaseInfo> info;
 
     QLabel *labelTime1;
     QLabel *labelTime2;
+    QLabel *labelEdited = nullptr;
 
     QPushButton *btnCancel;
     QPushButton *btnConfirm;
@@ -69,8 +66,9 @@ private:
     QLabel *labelType;
     QVector<QPushButton*>btnTypes;
 
-    QDateTime time1;
-    QDateTime time2;
+    QDateTime time1 = QDateTime::currentDateTime();
+    QDateTime time2 = QDateTime::currentDateTime();
+    QDateTime *timeEdited = nullptr;
 };
 
 #endif // TASKEDITDIALOG_H

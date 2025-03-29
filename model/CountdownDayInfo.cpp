@@ -39,7 +39,7 @@ QString CountdownDayInfo::Time() const
     //     .arg(Utility::GetDayOfWeek(time.dayOfWeek()))
     //     .arg(days == 0 ? QString("今日") : QString("剩余%1日").arg(days));
     return QString("%1 %2 | %3")
-        .arg(time.toString("yyyy:MM:dd"))
+        .arg(time.toString("yyyy-MM-dd"))
         .arg(Utility::GetDayOfWeek(time.dayOfWeek()))
         .arg(days == 0 ? QString("今日") : QString("剩余%1日").arg(days));
 }

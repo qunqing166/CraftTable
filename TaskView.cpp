@@ -59,11 +59,16 @@ void TaskView::AddTask(BaseInfo** info)
     connect(vItem, &TaskViewItem::Complete, this, &TaskView::OnItemComplete);
     connect(vItem, &TaskViewItem::Edit, this, [&](TaskViewItem* item){
         this->editedItem = item;
+
+        /**
+         *  这里有个问题, 如果直接调用EditTaskInfo的话, 会造成TaskEditDialog里面的组件不可用,
+         *  我通过信号传递, 将这段代码放到其他地方去调用任然如此.
+         *
+         *  我这里唯一能想到的解决方法就是将这个操作移到子线程进行, 这个时候运行是没有问题的
+         */
         QMetaObject::invokeMethod(this, [&](){
             EditTaskInfo(TaskEditDialog::edit);
         }, Qt::QueuedConnection);
-
-        // emit Edit(editedItem);
     });
 }
 

@@ -29,7 +29,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         TaskViewItem.h TaskViewItem.cpp
         model/TaskInfo.h model/TaskInfo.cpp
         TaskEditDialog.h TaskEditDialog.cpp
-        TimeEditor.h TimeEditor.cpp
+
         FileManagement.h FileManagement.cpp
         model/ScheduleInfo.h model/ScheduleInfo.cpp
         model/BaseInfo.h model/BaseInfo.cpp

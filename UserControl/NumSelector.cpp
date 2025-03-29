@@ -12,6 +12,13 @@ NumSelector::NumSelector(int num, QWidget *parent, int min, int max):
     this->UpdateText();
 }
 
+void NumSelector::SetValue(int value)
+{
+    this->num = value;
+    /* 手动刷新显示 */
+    this->UpdateText();
+}
+
 void NumSelector::SetRange(int min, int max)
 {
     this->min = min;
@@ -45,6 +52,7 @@ void NumSelector::ChangeData(bool isNext)
     {
         if(num - 1 >= min)num--;
     }
+    emit ValueChanged(num);
 }
 void NumSelector::SetSuffix(const QString &s)
 {
