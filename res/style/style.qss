@@ -41,12 +41,17 @@ TaskView{
 QPushButton#btn_item{
     background-color:#cfcfcf;
     color:black;
-    /* color: transparent; */
+    border: none;
+    border-radius: 5px;
+    min-height: 20px;
 }
 
 QPushButton:hover#btn_item{
     background-color:#a8a8a8;
     color:black;
+    border: none;
+    border-radius: 5px;
+    min-height: 20px;
 }
 
 /* QPushButton:pressed#btn_item{
@@ -152,5 +157,32 @@ QLabel#tasledit_labeltime{
 }
 
 QLineEdit#taskedit_lineedit{
-    background-color: rgb(170, 170, 170);
+    background-color: rgb(255, 255, 255);
+    border: 2px solid;
+    border-color: rgb(107, 107, 107);
+    border-radius: 15px;
+    min-height: 30px;
+    color: black;
+    padding: 3px;
+}
+
+QPushButton#editor_btn{
+    background-color: #c0c0c0;
+    border: none;
+    border-radius: 5px;
+    min-height: 30px;
+}
+
+QPushButton:hover#editor_btn{
+    background-color: #858585;
+    border: none;
+    border-radius: 5px;
+    min-height: 30px;
+}
+
+QPushButton:pressed#editor_btn{
+    background-color: #666666;
+    border: none;
+    border-radius: 5px;
+    min-height: 30px;
 }

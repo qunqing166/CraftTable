@@ -212,9 +212,12 @@ bool TaskEditDialog::eventFilter(QObject *obj, QEvent *event)
 void TaskEditDialog::ObjectInit()
 {
     lineEditor = new QLineEdit(this);
+    lineEditor->setObjectName("taskedit_lineedit");
 
     btnCancel = new QPushButton("取消", this);
+    btnCancel->setObjectName("editor_btn");
     btnConfirm = new QPushButton("确认", this);
+    btnConfirm->setObjectName("editor_btn");
     labelType = new QLabel("任务", this);
     labelType->setAlignment(Qt::AlignCenter);
     labelType->setObjectName("taskedit_labeltype");
@@ -266,7 +269,6 @@ void TaskEditDialog::WidgetInit()
     label1->setObjectName("taskedit_label");
     vLayout->addWidget(label1);
 
-    lineEditor->setObjectName("taskedit_lineedit");
     vLayout->addWidget(lineEditor);
 
     labelStartTime = new QLabel(this);
