@@ -235,6 +235,9 @@ void TaskEditDialog::ObjectInit()
     labelTime1 = new QLabel(Utility::FormatDateTime(QDateTime::currentDateTime()), this);
     labelTime2 = new QLabel(Utility::FormatDateTime(QDateTime::currentDateTime()), this);
 
+    labelTime1->setObjectName("tasledit_labeltime");
+    labelTime2->setObjectName("tasledit_labeltime");
+
     labelTime1->installEventFilter(this);
     labelTime2->installEventFilter(this);
 
@@ -274,9 +277,6 @@ void TaskEditDialog::WidgetInit()
     labelStartTime = new QLabel(this);
     labelStartTime->setObjectName("taskedit_label");
     vLayout->addWidget(labelStartTime);
-
-    labelTime1->setObjectName("tasledit_labeltime");
-    labelTime2->setObjectName("tasledit_labeltime");
     vLayout->addWidget(labelTime1);
 
     labelEndTime = new QLabel("结束时间", this);

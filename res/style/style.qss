@@ -156,6 +156,15 @@ QLabel#tasledit_labeltime{
     min-height: 40px;
 }
 
+QLabel:hover#tasledit_labeltime{
+    border: 1px solid;
+    border-radius: 5px;
+    background-color: #bebebe;
+    color: black;
+    min-height: 40px;
+    
+}
+
 QLineEdit#taskedit_lineedit{
     background-color: rgb(255, 255, 255);
     border: 2px solid;
