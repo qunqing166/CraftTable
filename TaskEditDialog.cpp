@@ -2,6 +2,7 @@
 #include "model/CountdownDayInfo.h"
 #include "model/ScheduleInfo.h"
 #include "model/TaskInfo.h"
+#include "model/DailyTask.h"
 #include <QLabel>
 #include <QLineEdit>
 #include <QPushButton>
@@ -27,18 +28,6 @@ TaskEditDialog::TaskEditDialog(QWidget *parent)
 
     connect(btnCancel, &QPushButton::clicked, this, [&](){this->hide();});
     connect(btnConfirm, &QPushButton::clicked, this, &TaskEditDialog::OnBtnConfirmClicked);
-    connect(btnTypes[0], &QPushButton::clicked, this, [&](){
-        ShowEditedItem(Model::task);
-    });
-    connect(btnTypes[1], &QPushButton::clicked, this, [&](){
-        ShowEditedItem(Model::long_task);
-    });
-    connect(btnTypes[2], &QPushButton::clicked, this, [&](){
-        ShowEditedItem(Model::schedule);
-    });
-    connect(btnTypes[3], &QPushButton::clicked, this, [&](){
-        ShowEditedItem(Model::countdown_day);
-    });
     connect(timeEditor, &DateTimeEditor::ValueChanged, this, [&](const QDateTime& dt){
         if(labelEdited != nullptr && timeEdited != nullptr)
         {
@@ -82,6 +71,12 @@ void TaskEditDialog::SetTaskInfo(const BaseInfo *info)
         time2 = si->GetETime();
         break;
     }
+    case Model::daily_task:{
+        const DailyTask *di = static_cast<const DailyTask*>(info);
+        time1 = di->GetSTime();
+        time2 = di->GetETime();
+        break;
+    }
     default:
         break;
     }
@@ -102,6 +97,8 @@ BaseInfo* TaskEditDialog::GetTaskInfo()
         return new TaskInfo(lineEditor->text(), time1);
     case Model::long_task:
         return new LongTaskInfo(lineEditor->text(), time1.date());
+    case Model::daily_task:
+        return new DailyTask(lineEditor->text(), time1.date(), time2.date());
     default:
         return nullptr;
     }
@@ -154,6 +151,10 @@ void TaskEditDialog::ShowEditedItem(Model::ModelType type)
         this->labelStartTime->setText("开始时间");
         this->labelEndTime->hide();
         this->labelTime2->hide();
+    case Model::daily_task:
+        this->labelStartTime->setText("开始时间");
+        this->labelEndTime->show();
+        this->labelTime2->show();
     default:
         break;
     }
@@ -223,14 +224,18 @@ void TaskEditDialog::ObjectInit()
     labelType->setObjectName("taskedit_labeltype");
 
     // QStringList btnText{"任务", "日程", "倒数日"};
-    QStringList btnText = Model::TypeToChinese.values();
+    // QStringList btnText = Model::TypeToChinese.values();
+    auto typeKeys = Model::TypeToChinese.keys();
     // btnTypes.resize(btnText.count());
-    btnTypes.resize(btnText.count() - 1);
-    for(int i = 0; i < btnText.count() - 1; ++i)
+    btnTypes.resize(typeKeys.count() - 1);
+    for(int i = 0; i < typeKeys.count() - 1; ++i)
     {
-        btnTypes[i] = new QPushButton(btnText[i + 1], this);
+        btnTypes[i] = new QPushButton(Model::TypeToChinese.value(typeKeys[i + 1]), this);
         btnTypes[i]->setObjectName("taskedit_btn");
         btnTypes[i]->setFixedWidth(45);
+        connect(btnTypes[i], &QPushButton::clicked, this, [=](){
+            ShowEditedItem(typeKeys[i + 1]);
+        });
     }
     labelTime1 = new QLabel(Utility::FormatDateTime(QDateTime::currentDateTime()), this);
     labelTime2 = new QLabel(Utility::FormatDateTime(QDateTime::currentDateTime()), this);
