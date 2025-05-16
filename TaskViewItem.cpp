@@ -112,11 +112,24 @@ void TaskViewItem::WidgetInit()
     // 获取颜色
     int id = Model::TypeToChinese.key((*info)->Type());
 
-    widget->setObjectName("task_item" + QString::number(id));
+    widget->setObjectName("task_item");
+    widget->setStyleSheet(QString(R"(
+        QWidget#task_item{
+            background-color:%1;
+            margin: 2px;
+            border-radius: 15px;
+        }
+    )").arg(Model::TypeToColor.value((Model::ModelType)id).second.name()));
 
     QLabel *label1 = new QLabel(this);
     label1->setFixedWidth(4);
-    label1->setObjectName("task_label" + QString::number(id));
+    label1->setObjectName("task_label");
+    label1->setStyleSheet(QString(R"(
+        QLabel#task_label{
+            background-color:%1;
+            border-radius:2px;
+        }
+    )").arg(Model::TypeToColor.value((Model::ModelType)id).first.name()));
 
     QHBoxLayout *hLayout = new QHBoxLayout();
     widget->setLayout(hLayout);

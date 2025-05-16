@@ -6,17 +6,18 @@ DailyTask::DailyTask(const QString &content, const QDate &start, const QDate& en
 
 }
 
-DailyTask::DailyTask(const QJsonObject &):
+DailyTask::DailyTask(const QJsonObject &obj):
     BaseInfo(Model::daily_task)
 {
-
+    FromJson(obj);
 }
 
 QString DailyTask::Time() const
 {
     int days = QDate::currentDate().daysTo(start);
-    return QString("%1开始 | ").arg(start.toString("yyyy-MM-dd")) +
-           ((days > 0) ? QString("%1日后").arg(days) : QString("累计%1天").arg(-days));
+    return QString("%1~%2 | %3").arg(start.toString("MM-dd"))
+                                .arg(end.toString("MM-dd"))
+                                .arg((days > 0) ? QString("%1日后").arg(days) : QString("累计%1天").arg(-days));
 }
 
 bool DailyTask::IsTimeout() const
@@ -32,8 +33,8 @@ bool DailyTask::IsShowByDate(const QDateTime &dt) const
 void DailyTask::FromJson(const QJsonObject &obj)
 {
     this->content = obj["content"].toString();
-    this->start = QDate::fromString(obj["time-start"].toString());
-    this->end = QDate::fromString(obj["time-start"].toString());
+    this->start = QDate::fromString(obj["time"].toObject()["start"].toString());
+    this->end = QDate::fromString(obj["time"].toObject()["end"].toString());
     if (obj["is_complete"].toBool())
         this->Completed();
 }

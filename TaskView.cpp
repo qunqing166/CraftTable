@@ -1,14 +1,10 @@
 #include "FileManagement.h"
 #include "TaskView.h"
 #include "TaskViewItem.h"
-#include "model/CountdownDayInfo.h"
-#include "model/ScheduleInfo.h"
-#include "model/TaskInfo.h"
 #include <QJsonArray>
 #include <QJsonObject>
 #include <QJsonDocument>
-#include "model/ModelType.h"
-#include "model/LongTaskInfo.h"
+#include "Model/TaskBuilder.h"
 
 TaskView::TaskView(QWidget *parent):QListWidget(parent)
 {
@@ -175,30 +171,7 @@ void TaskView::LoadData()
 
     for(int i = 0; i < arr.count(); ++i)
     {
-        QJsonObject&& obj1 = arr[i].toObject();
-        BaseInfo *info;
-        Model::ModelType mType = Model::TypeToStr.key(obj1["type"].toString());
-
-        switch(mType)
-        {
-        case Model::countdown_day:
-            info = new CountdownDayInfo(arr[i].toObject());
-            break;
-        case Model::task:
-            info = new TaskInfo(arr[i].toObject());
-            break;
-        case Model::schedule:
-            info = new ScheduleInfo(arr[i].toObject());
-            break;
-        case Model::long_task:
-            info = new LongTaskInfo(arr[i].toObject());
-            break;
-        default:
-            /* 不存在类型直接跳过 */
-            info = nullptr;
-            continue;
-            break;
-        }
+        BaseInfo *info = TaskBuilder::Create(arr[i].toObject());
 
         if(info->IsCompleted())
         {
@@ -211,9 +184,16 @@ void TaskView::LoadData()
         }
         else
         {
-
             BaseInfo** p(new BaseInfo*);
-            infoList.append(p);
+            /* 将每日任务放在最上面 */
+            if(Model::TypeToChinese.key(info->Type()) == Model::daily_task)
+            {
+                infoList.insert(0, p);
+            }
+            else
+            {
+                infoList.append(p);
+            }
             *p = info;
         }
 

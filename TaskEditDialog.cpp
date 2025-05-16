@@ -10,7 +10,7 @@
 #include <QSpacerItem>
 #include <QPainter>
 #include "utility/Utility.h"
-#include "model/LongTaskInfo.h"
+#include "model/TaskBuilder.h"
 
 TaskEditDialog::TaskEditDialog(QWidget *parent)
     : QDialog{parent}
@@ -86,22 +86,7 @@ void TaskEditDialog::SetTaskInfo(const BaseInfo *info)
 
 BaseInfo* TaskEditDialog::GetTaskInfo()
 {
-    Model::ModelType key = Model::TypeToChinese.key(labelType->text());
-
-    switch (key) {
-    case Model::countdown_day:
-        return new CountdownDayInfo(lineEditor->text(), this->time1.date());
-    case Model::schedule:
-        return new ScheduleInfo(lineEditor->text(), time1, time2);;
-    case Model::task:
-        return new TaskInfo(lineEditor->text(), time1);
-    case Model::long_task:
-        return new LongTaskInfo(lineEditor->text(), time1.date());
-    case Model::daily_task:
-        return new DailyTask(lineEditor->text(), time1.date(), time2.date());
-    default:
-        return nullptr;
-    }
+    return TaskBuilder::Create(Model::TypeToChinese.key(labelType->text()), lineEditor->text(), this->time1, this->time2);
 }
 
 void TaskEditDialog::OnBtnConfirmClicked()

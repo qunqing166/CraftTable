@@ -2,6 +2,7 @@
 #define MODELTYPE_H
 
 #include <QMap>
+#include <QColor>
 
 namespace Model {
 
@@ -13,10 +14,12 @@ namespace Model {
  * 3.在下列方法中添加对应代码
  *      TaskEditDialog::ShowEditedItem      编辑界面
  *      TaskEditDialog::SetTaskInfo         将对象数据传入编辑器
- *      TaskEditDialog::GetTaskInfo         将编辑器数据传入对象
  * 4.
  */
 
+/**
+ * @brief The ModelType enum    所有的任务类型
+ */
 enum ModelType
 {
     none,
@@ -27,6 +30,9 @@ enum ModelType
     daily_task
 };
 
+/**
+ * @brief TypeToStr     任务类型与英文名的映射
+ */
 const QMap<ModelType, QString> TypeToStr{
     {none, ""},
     {task, "task"},
@@ -35,6 +41,10 @@ const QMap<ModelType, QString> TypeToStr{
     {countdown_day, "countdown_day"},
     {daily_task, "daily_task"}
 };
+
+/**
+ * @brief TypeToChinese     任务类型与中文名的映射
+ */
 const QMap<ModelType, QString> TypeToChinese{
     {none, ""},
     {task, "任务"},
@@ -43,6 +53,19 @@ const QMap<ModelType, QString> TypeToChinese{
     {countdown_day, "倒数日"},
     {daily_task, "每日任务"}
 };
+
+/**
+ * @brief QPair::second, QPair::first
+ */
+const QMap<ModelType, QPair<QColor, QColor>> TypeToColor{
+    {none, {"#ffffffff", "#ffffffff"}},
+    {task, {"#7ea3cf", "#b8d7fc"}},
+    {long_task, {"#98da7a", "#cfffb9"}},
+    {schedule, {"#8382f9", "#c7c7ff"}},
+    {countdown_day, {"#c7706a", "#ffa49e"}},
+    {daily_task, {"#8382f9", "#c7c7ff"}}
+};
+
 
 
 }

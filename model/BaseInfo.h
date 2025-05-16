@@ -9,6 +9,7 @@ class BaseInfo
 {
 public:
     BaseInfo(Model::ModelType type, const QString& content = QString());
+
     virtual ~BaseInfo(){}
 
     /**
@@ -52,8 +53,9 @@ public:
 
     /**
      * @brief FromJson  从json对象中获取信息, 与ToJson相反的操作
+     *                  本来应该是纯虚函数, 但是为了方便直接由base通过json初始化就只使用普通虚函数
      */
-    virtual void FromJson(const QJsonObject&) = 0;
+    virtual void FromJson(const QJsonObject&){};
 
     void Completed(){this->isCompleted = true;};
     bool IsCompleted() const {return isCompleted;}
